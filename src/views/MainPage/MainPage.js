@@ -5,7 +5,7 @@ function MainPage() {
 
 
     return (
-        <div>MainPage</div>
+        <div style={{ textAlign: 'center' }}>MainPage</div>
     )
 }
 
