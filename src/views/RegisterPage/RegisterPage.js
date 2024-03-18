@@ -12,10 +12,21 @@ import { Link, useNavigate } from 'react-router-dom';
 import registerImage from '../../images/RegisterPageImage.jpg';
 import axios from '../../utils/axios';
 import moment from 'moment';
-import { Alert, Snackbar } from '@mui/material';
+import { Alert, Backdrop, CircularProgress, Snackbar } from '@mui/material';
+import { useEffect } from 'react';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles((theme) => ({
+    backdrop: {
+        zIndex: 1500,
+        color: '#fff'
+    },
+}));
 
 function SignUpSide() {
+    const classes = useStyles();
     const navigate = useNavigate();
+
     const [firstName, setFirstName] = React.useState('');
     const [lastName, setLastName] = React.useState('');
     const [emailInput, setEmailInput] = React.useState('');
@@ -29,6 +40,21 @@ function SignUpSide() {
         ErrorCode: '0',
         ErrorDescription: 'success_message'
     });
+
+
+    // Kullanıcı oturum açık, ana sayfaya yönlendir
+    useEffect(() => {
+        setLoading(true);
+        const isLoggedIn = localStorage.getItem('accessToken');
+        if (isLoggedIn) {
+            setTimeout(() => {
+                window.location.href = "/";
+                setLoading(false);
+            }, 1000);
+        } else {
+            setLoading(false);
+        }
+    }, []);
 
     const registerUser = () => {
         if (!emailInput || !passwordInput || !firstName || !lastName || !birthDate) {
@@ -86,6 +112,9 @@ function SignUpSide() {
 
     return (
         <>
+            <Backdrop className={classes.backdrop} open={loading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <Snackbar open={uyari} autoHideDuration={2000} onClose={uyariKapat}
                 anchorOrigin={{ vertical: "top", horizontal: "right" }}>
                 <Alert onClose={uyariKapat} variant='filled' severity={uyariTip}>
@@ -108,7 +137,7 @@ function SignUpSide() {
                             <LockOutlinedIcon />
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            <i><b>TRAVELINGO</b></i>
+                            <i><b>GEZİ YOLUNDA</b></i>
                         </Typography>
                         <Grid container>
                             <TextField

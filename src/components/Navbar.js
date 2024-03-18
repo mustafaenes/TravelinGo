@@ -1,118 +1,214 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Button, IconButton, TextField, Stack, Grid, InputAdornment, Divider, Avatar } from '@mui/material';
-import SearchIcon from "@mui/icons-material/Search";
+import { AppBar, Toolbar, Button, IconButton, Avatar, Grid, Tooltip, Divider, Menu, MenuItem, ListItemIcon } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
-import logo from '../images/logo2.png';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { Link, useLocation } from 'react-router-dom';
+import logo from '../images/GeziYolundaLogo2.png';
+import { Logout, Settings } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
-    title: {
+    logo: {
+        height: '4rem',
         cursor: 'pointer',
-        fontStyle: 'italic',
-        textAlign: 'center',
-        color: 'green',
     },
+    spacer: {
+        flexGrow: 1,
+    }
 }));
-
 
 const Navbar = () => {
     const classes = useStyles();
     const location = useLocation();
 
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+
     const isLoginPage = location.pathname === '/login';
     const isRegisterPage = location.pathname === '/register';
-    const showNavbar = isLoginPage || isRegisterPage ? false : true;
-    const isAuthenticated = localStorage.getItem('accessToken'); // AccessToken varsa kullanıcı giriş yapmış kabul edilir
-
+    const showNavbar = !isLoginPage && !isRegisterPage;
+    const isAuthenticated = localStorage.getItem('accessToken');
 
     const handleLogout = () => {
-        localStorage.removeItem('accessToken'); // AccessToken'i silerek kullanıcıyı çıkış yapmış kabul ediyoruz
-        window.location.reload(); // Sayfayı yenileyerek kullanıcıyı anasayfaya yönlendiriyoruz
+        localStorage.removeItem('accessToken');
+        window.location.reload();
     };
 
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     return showNavbar ? (
         <>
-            <AppBar position="static" color='transparent' sx={{ boxShadow: 'none' }}>
+            <AppBar position="static" sx={{ boxShadow: 'none', backgroundColor: 'antiquewhite' }}>
                 <Toolbar>
-                    <Grid container spacing={10}>
-                        <Grid item xs={6} sm={6} md={2} lg={2}>
-                            {/* <img src={logo} alt="Logo" height={150} /> */}
+                    <Grid container alignItems="center">
+                        <Grid item>
+                            <img src={logo} alt="GeziYolunda Logo" className={classes.logo} />
                         </Grid>
-                        <Grid item xs={6} sm={6} md={2} lg={2} />
-                        <Grid item xs={6} sm={6} md={4} lg={4}>
-                            <TextField
-                                placeholder="Lütfen Aratmak istediğiniz Şehri Giriniz..."
-                                variant="outlined"
-                                size="small"
-                                className={classes.searchInput}
-                                fullWidth
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position='end'>
-                                            <IconButton>
-                                                <SearchIcon />
-                                            </IconButton>
-                                        </InputAdornment>
-                                    )
-                                }}
-                            />
+                        <Grid item className={classes.spacer} />
+                        <Grid item>
+                            <Button
+                                variant="filled"
+                                size="large"
+                                component={Link}
+                                to="/"
+                                sx={{
+                                    fontSize: '1rem',
+                                    textTransform: 'capitalize',
+                                    borderRadius: '1.3rem',
+                                    color: 'black',
+                                    marginRight: 1,
+                                }}>
+                                Şehirler
+                            </Button>
+                            <Button
+                                variant="filled"
+                                size="large"
+                                component={Link}
+                                to="/"
+                                sx={{
+                                    fontSize: '1rem',
+                                    textTransform: 'capitalize',
+                                    borderRadius: '1.3rem',
+                                    color: 'black',
+                                    marginRight: 1,
+                                }}>
+                                Restoranlar
+                            </Button>
+                            <Button
+                                variant="filled"
+                                size="large"
+                                component={Link}
+                                to="/"
+                                sx={{
+                                    fontSize: '1rem',
+                                    textTransform: 'capitalize',
+                                    borderRadius: '1.3rem',
+                                    color: 'black',
+                                    marginRight: 1,
+                                }}>
+                                Hakkımızda
+                            </Button>
+                            <Button
+                                variant="filled"
+                                size="large"
+                                component={Link}
+                                to="/"
+                                sx={{
+                                    fontSize: '1rem',
+                                    textTransform: 'capitalize',
+                                    borderRadius: '1.3rem',
+                                    color: 'black',
+                                    marginRight: 1,
+                                }}>
+                                Bize Ulaşın
+                            </Button>
                         </Grid>
-                        <Grid item xs={6} sm={6} md={1} lg={1} />
-                        <Grid item xs={6} sm={6} md={3} lg={3}>
-                            {isAuthenticated ?
-                                <Stack direction='row' spacing={2}>
-                                    <IconButton
-                                        edge="end"
-                                        className={classes.profileButton}
-                                        color="inherit"
-                                        aria-label="profile"
+                        <Grid item>
+                            {isAuthenticated ? (
+                                <React.Fragment>
+                                    <Tooltip title="Account settings">
+                                        <IconButton
+                                            onClick={handleClick}
+                                            size="small"
+                                            sx={{ ml: 2 }}
+                                            aria-controls={open ? 'account-menu' : undefined}
+                                            aria-haspopup="true"
+                                            aria-expanded={open ? 'true' : undefined}
+                                        >
+                                            <Avatar sx={{ width: 32, height: 32 }}></Avatar>
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Menu
+                                        anchorEl={anchorEl}
+                                        id="account-menu"
+                                        open={open}
+                                        onClose={handleClose}
+                                        onClick={handleClose}
+                                        PaperProps={{
+                                            elevation: 0,
+                                            sx: {
+                                                overflow: 'visible',
+                                                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                                                mt: 1.5,
+                                                '& .MuiAvatar-root': {
+                                                    width: 32,
+                                                    height: 32,
+                                                    ml: -0.5,
+                                                    mr: 1,
+                                                },
+                                                '&::before': {
+                                                    content: '""',
+                                                    display: 'block',
+                                                    position: 'absolute',
+                                                    top: 0,
+                                                    right: 14,
+                                                    width: 10,
+                                                    height: 10,
+                                                    bgcolor: 'background.paper',
+                                                    transform: 'translateY(-50%) rotate(45deg)',
+                                                    zIndex: 0,
+                                                },
+                                            },
+                                        }}
+                                        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                                     >
-                                        <Avatar>
-                                            <AccountCircleIcon />
-                                        </Avatar>
-                                    </IconButton>
-                                    <IconButton
-                                        edge="end"
-                                        color="inherit"
-                                        aria-label="logout"
-                                        onClick={handleLogout}
-                                    >
-                                        <ExitToAppIcon />
-                                    </IconButton>
-                                </Stack> :
-                                <Stack direction='row' spacing={2}>
+                                        <MenuItem onClick={handleClose}>
+                                            <Avatar /> Profile
+                                        </MenuItem>
+                                        <Divider />
+                                        <MenuItem onClick={handleLogout}>
+                                            <ListItemIcon>
+                                                <Logout fontSize="small" />
+                                            </ListItemIcon>
+                                            Logout
+                                        </MenuItem>
+                                    </Menu>
+                                </React.Fragment>
+                            ) : (
+                                <Grid container>
                                     <Button
-                                        variant='contained'
-                                        color="primary"
+                                        variant="contained"
                                         size='large'
                                         component={Link}
-                                        to='/login'
+                                        to="/login"
+                                        sx={{
+                                            textTransform: 'capitalize',
+                                            borderRadius: '1.3rem',
+                                            backgroundColor: 'black',
+                                            color: 'white',
+                                            marginRight: 1,
+                                        }}
                                     >
                                         Giriş Yap
                                     </Button>
                                     <Button
-                                        variant='contained'
-                                        color="primary"
+                                        variant="contained"
                                         size='large'
                                         component={Link}
-                                        to='/register'
+                                        to="/register"
+                                        sx={{
+                                            textTransform: 'capitalize',
+                                            borderRadius: '1.3rem',
+                                            backgroundColor: 'black',
+                                            color: 'white',
+                                            marginRight: 1,
+                                        }}
                                     >
                                         Üye Ol
                                     </Button>
-                                </Stack>
-                            }
-
+                                </Grid>
+                            )}
                         </Grid>
                     </Grid>
                 </Toolbar>
             </AppBar>
             <Divider />
         </>
-    ) : null
+    ) : null;
 };
 
 export default Navbar;

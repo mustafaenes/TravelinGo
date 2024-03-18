@@ -11,10 +11,20 @@ import Typography from '@mui/material/Typography';
 import { Link, useNavigate } from 'react-router-dom';
 import loginImage from '../../images/logo5.jpg';
 import axios from 'axios';
-import { Alert, Snackbar } from '@mui/material';
+import { Alert, Backdrop, CircularProgress, Snackbar } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { useEffect } from 'react';
+
+const useStyles = makeStyles((theme) => ({
+    backdrop: {
+        zIndex: 1500,
+        color: '#fff'
+    },
+}));
 
 function SignInSide() {
     const navigate = useNavigate();
+    const classes = useStyles();
 
     const [emailInput, setEmailInput] = React.useState('');
     const [passwordInput, setPasswordInput] = React.useState('');
@@ -27,7 +37,19 @@ function SignInSide() {
         ErrorDescription: 'success_message'
     });
 
-
+    // Kullanıcı oturum açık, ana sayfaya yönlendir
+    useEffect(() => {
+        setLoading(true);
+        const isLoggedIn = localStorage.getItem('accessToken');
+        if (isLoggedIn) {
+            setTimeout(() => {
+                window.location.href = "/";
+                setLoading(false);
+            }, 1000);
+        } else {
+            setLoading(false);
+        }
+    }, []);
 
 
     const loginUser = () => {
@@ -76,8 +98,11 @@ function SignInSide() {
 
     return (
         <>
+            <Backdrop className={classes.backdrop} open={loading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <Snackbar open={uyari} autoHideDuration={2000} onClose={uyariKapat}
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+                anchorOrigin={{ vertical: "top", horizontal: "left" }}>
                 <Alert onClose={uyariKapat} variant='filled' severity={uyariTip}>
                     {responseMessage}
                 </Alert>
@@ -105,7 +130,7 @@ function SignInSide() {
                             <LockOutlinedIcon />
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            <i><b>TRAVELINGO</b></i>
+                            <i><b>GEZİ YOLUNDA</b></i>
                         </Typography>
                         <Grid container>
                             <TextField
