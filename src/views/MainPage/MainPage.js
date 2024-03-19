@@ -54,7 +54,7 @@ function MainPage() {
 
     return (
         <>
-            <Grid container component="main" sx={{ backgroundColor: 'antiquewhite' }}>
+            <Grid container component="main">
                 <Grid item xs={2} sm={2} md={2} lg={2} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <IconButton disableRipple onClick={() => { handlePrevImage() }}>
                         <ArrowBack

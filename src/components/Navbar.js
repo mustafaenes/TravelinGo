@@ -1,9 +1,9 @@
 import React from 'react';
-import { AppBar, Toolbar, Button, IconButton, Avatar, Grid, Tooltip, Divider, Menu, MenuItem, ListItemIcon } from '@mui/material';
+import { AppBar, Toolbar, Button, IconButton, Avatar, Grid, Tooltip, Divider, Menu, MenuItem, ListItemIcon, Backdrop, CircularProgress, Snackbar, Alert } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../images/GeziYolundaLogo2.png';
-import { Logout, Settings } from '@mui/icons-material';
+import { Logout } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
     logo: {
@@ -12,16 +12,27 @@ const useStyles = makeStyles((theme) => ({
     },
     spacer: {
         flexGrow: 1,
+    },
+    backdrop: {
+        zIndex: 1500
     }
 }));
 
 const Navbar = () => {
     const classes = useStyles();
     const location = useLocation();
+    const navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
+    const [loading, setLoading] = React.useState(false);
+    const [uyari, setUyari] = React.useState(false);
+    const [uyariTip, setUyariTip] = React.useState('info');
+    const [responseMessage, setresponseMessage] = React.useState({
+        ErrorCode: '0',
+        ErrorDescription: 'success_message'
+    });
 
+    const open = Boolean(anchorEl);
     const isLoginPage = location.pathname === '/login';
     const isRegisterPage = location.pathname === '/register';
     const showNavbar = !isLoginPage && !isRegisterPage;
@@ -39,12 +50,40 @@ const Navbar = () => {
         setAnchorEl(null);
     };
 
+    const handleClickToProfile = () => {
+        navigate('/profile');
+    };
+
+    const GoToMainPage = () => {
+        setLoading(true);
+        setTimeout(() => {
+            navigate('/');
+            setLoading(false);
+        }, 500);
+    }
+
+    const uyariKapat = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setUyari(false);
+    };
+
     return showNavbar ? (
         <>
-            <AppBar position="static" sx={{ boxShadow: 'none', backgroundColor: 'antiquewhite' }}>
+            <Backdrop className={classes.backdrop} open={loading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+            <Snackbar open={uyari} autoHideDuration={2000} onClose={uyariKapat}
+                anchorOrigin={{ vertical: "top", horizontal: "left" }}>
+                <Alert onClose={uyariKapat} variant='filled' severity={uyariTip}>
+                    {responseMessage}
+                </Alert>
+            </Snackbar>
+            <AppBar position="static" color='transparent' sx={{ boxShadow: 'none' }}>
                 <Toolbar>
                     <Grid container alignItems="center">
-                        <Grid item>
+                        <Grid item onClick={() => { GoToMainPage() }}>
                             <img src={logo} alt="GeziYolunda Logo" className={classes.logo} />
                         </Grid>
                         <Grid item className={classes.spacer} />
@@ -156,7 +195,7 @@ const Navbar = () => {
                                         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                                         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                                     >
-                                        <MenuItem onClick={handleClose}>
+                                        <MenuItem onClick={handleClickToProfile}>
                                             <Avatar /> Profile
                                         </MenuItem>
                                         <Divider />
