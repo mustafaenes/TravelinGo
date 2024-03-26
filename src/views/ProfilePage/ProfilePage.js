@@ -20,7 +20,9 @@ export default function ProfilePage() {
     const [email, setEmail] = React.useState("");
     const [dayOfBirth, setDayOfBirth] = React.useState("");
     const [registrationDate, setRegistrationDate] = React.useState("");
-    const [address, setAddress] = React.useState("Ayazağa Mahallesi G136.Sokak No:3 Sarıyer/İstanbul");
+    const [address, setAddress] = React.useState("");
+    const [phoneNumber, setPhoneNumber] = React.useState("");
+    const [gender, setGender] = React.useState("");
 
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
@@ -31,6 +33,8 @@ export default function ProfilePage() {
             setDayOfBirth(decodedToken.dayOfBirth);
             setRegistrationDate(decodedToken.registrationDate);
             setAddress(decodedToken.address);
+            setGender(decodedToken.gender);
+            setPhoneNumber(formatPhoneNumber(decodedToken.phoneNumber));
         }
     }, []);
 
@@ -43,11 +47,36 @@ export default function ProfilePage() {
             email: decoded.email,
             dayOfBirth: decoded.DateOfBirth,
             registrationDate: decoded.RegistrationDate,
-            address: decoded.address
+            address: decoded.StreetAddress,
+            gender: decoded.gender === 'E' ? 'Erkek' : 'Kadın',
+            phoneNumber: decoded.PhoneNumber
         };
     };
 
+    const formatPhoneNumber = (phoneNumber) => {
+        // Girilen telefon numarasından sadece rakamları al
+        const cleaned = ('' + phoneNumber).replace(/\D/g, '');
 
+        // Girilen numara uzunluğuna göre formatı belirle
+        let formattedPhoneNumber = '';
+        for (let i = 0; i < cleaned.length; i++) {
+            if (i === 0) {
+                // İlk numarayı girdiğinde parantez ekle
+                formattedPhoneNumber += '(' + cleaned[i];
+            } else if (i === 3) {
+                // Üçüncü karakterden sonra boşluk ekle
+                formattedPhoneNumber += ') ' + cleaned[i];
+            } else if (i === 6 || i === 8) {
+                // Altıncı ve sekizinci karakterlerden sonra birer boşluk ekle
+                formattedPhoneNumber += ' ' + cleaned[i];
+            } else {
+                // Diğer karakterleri sırasıyla ekle
+                formattedPhoneNumber += cleaned[i];
+            }
+        }
+
+        return formattedPhoneNumber;
+    };
 
     return (
         <Container>
@@ -99,39 +128,51 @@ export default function ProfilePage() {
                     <Card>
                         <CardContent>
                             <Grid container spacing={2}>
-                                <Grid item xs={12} sm={3}>
-                                    <Typography variant="body1">Full Name</Typography>
+                                <Grid item xs={12} sm={3} sx={{ display: 'flex', alignItems: "center", justifyContent: "center" }}>
+                                    <Typography variant="body1">İsim Soyisim:</Typography>
                                 </Grid>
                                 <Grid item xs={12} sm={9}>
                                     <TextField fullWidth variant="outlined" value={fullName} onChange={(e) => setFullName(e.target.value)} />
                                 </Grid>
-                                <Grid item xs={12} sm={3}>
-                                    <Typography variant="body1">Email</Typography>
+                                <Grid item xs={12} sm={3} sx={{ display: 'flex', alignItems: "center", justifyContent: "center" }}>
+                                    <Typography variant="body1">Email Adresi:</Typography>
                                 </Grid>
                                 <Grid item xs={12} sm={9}>
                                     <TextField fullWidth variant="outlined" value={email} onChange={(e) => setEmail(e.target.value)} />
                                 </Grid>
-                                <Grid item xs={12} sm={3}>
-                                    <Typography variant="body1">Doğum Tarihi</Typography>
+                                <Grid item xs={12} sm={3} sx={{ display: 'flex', alignItems: "center", justifyContent: "center" }}>
+                                    <Typography variant="body1">Doğum Tarihi:</Typography>
                                 </Grid>
                                 <Grid item xs={12} sm={9}>
                                     <TextField fullWidth variant="outlined" value={dayOfBirth} onChange={(e) => setDayOfBirth(e.target.value)} />
                                 </Grid>
-                                <Grid item xs={12} sm={3}>
-                                    <Typography variant="body1">Address</Typography>
+                                <Grid item xs={12} sm={3} sx={{ display: 'flex', alignItems: "center", justifyContent: "center" }}>
+                                    <Typography variant="body1">Cep Telefonu:</Typography>
+                                </Grid>
+                                <Grid item xs={12} sm={9}>
+                                    <TextField fullWidth variant="outlined" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+                                </Grid>
+                                <Grid item xs={12} sm={3} sx={{ display: 'flex', alignItems: "center", justifyContent: "center" }}>
+                                    <Typography variant="body1">Cinsiyet:</Typography>
+                                </Grid>
+                                <Grid item xs={12} sm={9}>
+                                    <TextField fullWidth variant="outlined" value={gender} onChange={(e) => setGender(e.target.value)} />
+                                </Grid>
+                                <Grid item xs={12} sm={3} sx={{ display: 'flex', alignItems: "center", justifyContent: "center" }}>
+                                    <Typography variant="body1">Adres:</Typography>
                                 </Grid>
                                 <Grid item xs={12} sm={9}>
                                     <TextField fullWidth variant="outlined" value={address} onChange={(e) => setAddress(e.target.value)} />
                                 </Grid>
-                                <Grid item xs={12} sm={3}>
-                                    <Typography variant="body1">Kayıt Tarihi</Typography>
+                                <Grid item xs={12} sm={3} sx={{ display: 'flex', alignItems: "center", justifyContent: "center" }}>
+                                    <Typography variant="body1">Kayıt Tarihi:</Typography>
                                 </Grid>
                                 <Grid item xs={12} sm={9}>
                                     <TextField fullWidth disabled variant="outlined" value={registrationDate} onChange={(e) => setRegistrationDate(e.target.value)} />
                                 </Grid>
-                                <Grid item xs={12}>
+                                {/* <Grid item xs={12}>
                                     <Button variant="contained" color="primary" fullWidth>Save Changes</Button>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
                         </CardContent>
                     </Card>

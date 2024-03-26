@@ -7,7 +7,7 @@ import { Logout } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
     logo: {
-        height: '4rem',
+        height: '5rem',
         cursor: 'pointer',
     },
     spacer: {
@@ -92,9 +92,9 @@ const Navbar = () => {
                                 variant="filled"
                                 size="large"
                                 component={Link}
-                                to="/"
+                                to="/cities"
                                 sx={{
-                                    fontSize: '1rem',
+                                    fontSize: '1.4rem',
                                     textTransform: 'capitalize',
                                     borderRadius: '1.3rem',
                                     color: 'black',
@@ -108,7 +108,7 @@ const Navbar = () => {
                                 component={Link}
                                 to="/"
                                 sx={{
-                                    fontSize: '1rem',
+                                    fontSize: '1.4rem',
                                     textTransform: 'capitalize',
                                     borderRadius: '1.3rem',
                                     color: 'black',
@@ -122,7 +122,7 @@ const Navbar = () => {
                                 component={Link}
                                 to="/"
                                 sx={{
-                                    fontSize: '1rem',
+                                    fontSize: '1.4rem',
                                     textTransform: 'capitalize',
                                     borderRadius: '1.3rem',
                                     color: 'black',
@@ -136,7 +136,7 @@ const Navbar = () => {
                                 component={Link}
                                 to="/"
                                 sx={{
-                                    fontSize: '1rem',
+                                    fontSize: '1.4rem',
                                     textTransform: 'capitalize',
                                     borderRadius: '1.3rem',
                                     color: 'black',
@@ -157,7 +157,7 @@ const Navbar = () => {
                                             aria-haspopup="true"
                                             aria-expanded={open ? 'true' : undefined}
                                         >
-                                            <Avatar sx={{ width: 32, height: 32 }}></Avatar>
+                                            <Avatar sx={{ width: 45, height: 45 }}></Avatar>
                                         </IconButton>
                                     </Tooltip>
                                     <Menu
@@ -215,8 +215,9 @@ const Navbar = () => {
                                         component={Link}
                                         to="/login"
                                         sx={{
+                                            fontSize: '1.4rem',
                                             textTransform: 'capitalize',
-                                            borderRadius: '1.3rem',
+                                            borderRadius: '2rem',
                                             backgroundColor: 'black',
                                             color: 'white',
                                             marginRight: 1,
@@ -230,8 +231,9 @@ const Navbar = () => {
                                         component={Link}
                                         to="/register"
                                         sx={{
+                                            fontSize: '1.4rem',
                                             textTransform: 'capitalize',
-                                            borderRadius: '1.3rem',
+                                            borderRadius: '2rem',
                                             backgroundColor: 'black',
                                             color: 'white',
                                             marginRight: 1,

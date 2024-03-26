@@ -5,6 +5,7 @@ import MainPage from './views/MainPage/MainPage';
 import LoginPage from './views/LoginPage/LoginPage';
 import RegisterPage from './views/RegisterPage/RegisterPage';
 import ProfilePage from './views/ProfilePage/ProfilePage';
+import CitiesPage from './views/CitiesPage/CitiesPage';
 
 function AppRoutes() {
     return (
@@ -13,6 +14,7 @@ function AppRoutes() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path='/profile' element={<ProfilePage />} />
+            <Route path='/cities' element={<CitiesPage />} />
             {/* Diğer sayfaları da burada tanımlayabilirsiniz */}
         </Routes>
     )

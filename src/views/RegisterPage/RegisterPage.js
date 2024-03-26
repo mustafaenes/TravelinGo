@@ -12,7 +12,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import registerImage from '../../images/RegisterPageImage.jpg';
 import axios from '../../utils/axios';
 import moment from 'moment';
-import { Alert, Backdrop, CircularProgress, Snackbar } from '@mui/material';
+import { Alert, Backdrop, CircularProgress, FormControl, InputLabel, MenuItem, Select, Snackbar } from '@mui/material';
 import { useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 
@@ -31,6 +31,9 @@ function SignUpSide() {
     const [lastName, setLastName] = React.useState('');
     const [emailInput, setEmailInput] = React.useState('');
     const [passwordInput, setPasswordInput] = React.useState('');
+    const [phoneNumber, setPhoneNumber] = React.useState('');
+    const [gender, setGender] = React.useState('');
+    const [address, setAddress] = React.useState('');
     const [birthDate, setBirthDate] = React.useState('');
     const [error, setError] = React.useState('');
     const [loading, setLoading] = React.useState(false);
@@ -56,8 +59,38 @@ function SignUpSide() {
         }
     }, []);
 
+
+    const formatPhoneNumber = (phoneNumber) => {
+        // Girilen telefon numarasından sadece rakamları al
+        const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+
+        // Girilen numara uzunluğuna göre formatı belirle
+        let formattedPhoneNumber = '';
+        for (let i = 0; i < cleaned.length; i++) {
+            if (i === 0) {
+                // İlk numarayı girdiğinde parantez ekle
+                formattedPhoneNumber += '(' + cleaned[i];
+            } else if (i === 3) {
+                // Üçüncü karakterden sonra boşluk ekle
+                formattedPhoneNumber += ') ' + cleaned[i];
+            } else if (i === 6 || i === 8) {
+                // Altıncı ve sekizinci karakterlerden sonra birer boşluk ekle
+                formattedPhoneNumber += ' ' + cleaned[i];
+            } else {
+                // Diğer karakterleri sırasıyla ekle
+                formattedPhoneNumber += cleaned[i];
+            }
+        }
+
+        return formattedPhoneNumber;
+    };
+
+    const cleanPhoneNumber = (formattedPhoneNumber) => {
+        return formattedPhoneNumber.replace(/\D/g, ''); // Sadece rakamları al
+    };
+
     const registerUser = () => {
-        if (!emailInput || !passwordInput || !firstName || !lastName || !birthDate) {
+        if (!emailInput || !passwordInput || !firstName || !lastName || !birthDate || !phoneNumber || !gender || !address) {
             setError('Lütfen tüm bilgileri eksiksiz doldurun.');
             setUyariTip('error');
             setresponseMessage('Lütfen tüm bilgileri eksiksiz doldurun.');
@@ -71,12 +104,14 @@ function SignUpSide() {
             Surname: lastName,
             Email: emailInput,
             Password: passwordInput,
-            BirthDate: moment(birthDate).format('YYYY-MM-DD')
+            BirthDate: moment(birthDate).format('YYYY-MM-DD'),
+            PhoneNumber: cleanPhoneNumber(phoneNumber),
+            Gender: gender,
+            Address: address
         }
         const dataConfig = {
             headers: { 'Content-Type': 'application/json' }
         };
-
         axios.post('/SignUpUser', data, dataConfig)
             .then(response => {
                 setLoading(false);
@@ -166,6 +201,7 @@ function SignUpSide() {
                                 fullWidth
                                 id="email"
                                 label="E-posta"
+                                type='email'
                                 sx={{ marginBottom: '1rem' }}
                                 value={emailInput}
                                 onChange={(event) => setEmailInput(event.target.value)}
@@ -180,6 +216,44 @@ function SignUpSide() {
                                 sx={{ marginBottom: '1rem' }}
                                 value={passwordInput}
                                 onChange={(event) => setPasswordInput(event.target.value)}
+                            />
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="phoneNumber"
+                                label="Cep Telefonu"
+                                sx={{ marginBottom: '1rem' }}
+                                value={phoneNumber}
+                                onChange={(event) => {
+                                    const inputPhoneNumber = event.target.value;
+                                    // Telefon numarasını girdiği gibi değil, belirli bir formatta göstermek için formatlama
+                                    const formattedPhoneNumber = formatPhoneNumber(inputPhoneNumber);
+                                    setPhoneNumber(formattedPhoneNumber);
+                                }}
+                            />
+                            <FormControl fullWidth variant="outlined" sx={{ marginBottom: '1rem' }}>
+                                <InputLabel id="gender-label">Cinsiyet</InputLabel>
+                                <Select
+                                    labelId="gender-label"
+                                    id="gender"
+                                    value={gender}
+                                    label="Cinsiyet"
+                                    onChange={(event) => setGender(event.target.value)}
+                                >
+                                    <MenuItem value="E">Erkek</MenuItem>
+                                    <MenuItem value="K">Kadın</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="address"
+                                label="Adres"
+                                sx={{ marginBottom: '1rem' }}
+                                value={address}
+                                onChange={(event) => setAddress(event.target.value)}
                             />
                             <TextField
                                 variant="outlined"
