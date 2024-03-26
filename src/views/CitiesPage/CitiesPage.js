@@ -7,6 +7,7 @@ import resim3 from "../../images/login2.jpg"
 import resim4 from "../../images/login3.jpg"
 import resim5 from "../../images/logo4.jpg"
 import { ArrowBack, ArrowForward, LocationOn, DirectionsBus, Pets, LocalParkingOutlined, Done } from '@mui/icons-material';
+import CityTouristInfo from '../../components/CityTouristInfo';
 
 
 const useStyles = makeStyles({
@@ -96,8 +97,8 @@ const cities = [
         ],
         features: [
             { icon: <Pets />, text: 'Evcil hayvan kabul edilir.' },
-            { icon: <Done />, text: 'Spor Kıyafet Tavsiye Edilir.' },
             { icon: <DirectionsBus />, text: 'Yakın Civarlarda Toplu Taşıma Sistemi' },
+            { icon: <Done />, text: 'Spor Kıyafet Tavsiye Edilir.' },
             { icon: <LocalParkingOutlined />, text: 'Ücretsiz Otopark' }
         ]
     }
@@ -114,6 +115,7 @@ function CitiesPage() {
 
     const handleCityChange = (city) => {
         setSelectedCity(city);
+        console.log(city);
     };
 
     const handlePrevImage = () => {
@@ -186,62 +188,64 @@ function CitiesPage() {
                 </Grid>
                 <Grid item xs={12} sm={12} md={3} />
                 {/* Seçilen Şehrin Bilgileri */}
-                <Grid container sx={{ mt: 10, mb: 5 }}>
-                    <Grid item xs={12} sm={12} md={1} />
-                    <Grid item xs={12} sm={12} md={4}>
-                        <Card sx={{ borderRadius: '1rem', mr: 4 }}>
-                            <CardMedia
-                                component="img"
-                                image={selectedCity.images[0]} // Seçilen şehrin ilk resmini göster
-                                alt="City"
-                            />
-                        </Card>
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={4}>
-                        <Typography variant="h4" gutterBottom align="left">
-                            {selectedCity.name}
-                        </Typography>
-                        <Typography
-                            variant="body2"
-                            gutterBottom
-                            color="text.secondary"
-                            display="flex"
-                            alignItems="center"
-                            sx={{ textDecoration: 'underline', mb: 3 }}
-                        >
-                            <LocationOn sx={{ marginBottom: '0.5rem' }} />
-                            {`${selectedCity.name}/Türkiye`}
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                            {selectedCity.info}
-                        </Typography>
-                        {selectedCity.features.map((feature, index) => (
-                            <Button
-                                key={index}
-                                variant='outlined'
-                                size='medium'
-                                disabled
-                                style={{
-                                    textTransform: 'capitalize',
-                                    borderRadius: '2rem',
-                                    fontSize: '1.1rem',
-                                    margin: '2rem 1rem 1rem 0.5rem',
-                                    color: 'black', // Yazı rengi siyah
-                                    backgroundColor: '#f0ebcc', // Arka plan rengi hafif bej
-                                    border: '0' // Kenarlık rengi
-                                }}
-                            >
-                                {feature.icon}{' '}{feature.text}
-                            </Button>
-                        ))}
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={3} />
-                </Grid>
+                <CityTouristInfo city={selectedCity?.name} />
+                {/* Seçilen Şehrin Bilgileri */}
                 <Grid item xs={12} sm={12} md={3} />
                 <Grid item xs={12} sm={12} md={6}>
                     <Divider variant='fullWidth' sx={{ backgroundColor: 'yellow' }} />
                 </Grid>
-                <Grid item xs={12} sm={12} md={3} sx={{ mb: 10 }} />
+                <Grid item xs={12} sm={12} md={3} sx={{ mb: 5 }} />
+                <Grid item xs={12} sm={12} md={12} sx={{ mb: 5 }}>
+                    <Grid container>
+                        <Grid item xs={12} sm={12} md={1.5} />
+                        <Grid item xs={12} sm={12} md={3} sx={{ cursor: 'pointer' }}>
+                            <Card sx={{ minWidth: 275, margin: '1rem', borderRadius: '1rem' }}>
+                                <CardMedia
+                                    component='img'
+                                    height='300'
+                                    image={resim4}
+                                    title="Restoranlar"
+                                />
+                                <CardContent>
+                                    <Typography variant="h5" component="h2" textAlign='center'>
+                                        Restoranlar
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={3} sx={{ cursor: 'pointer' }}>
+                            <Card sx={{ minWidth: 275, margin: '1rem', borderRadius: '1rem' }}>
+                                <CardMedia
+                                    component='img'
+                                    height='300'
+                                    image={resim3}
+                                    title="Oteller"
+                                />
+                                <CardContent>
+                                    <Typography variant="h5" component="h2" textAlign='center'>
+                                        Oteller
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={3} sx={{ cursor: 'pointer' }}>
+                            <Card sx={{ minWidth: 275, margin: '1rem', borderRadius: '1rem' }}>
+                                <CardMedia
+                                    component='img'
+                                    height='300'
+                                    image={resim2}
+                                    title="Destinasyonlar"
+                                />
+                                <CardContent>
+                                    <Typography variant="h5" component="h2" textAlign='center'>
+                                        Destinasyonlar
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={1.5} />
+                    </Grid>
+                </Grid>
             </Grid >
         </>
     );
