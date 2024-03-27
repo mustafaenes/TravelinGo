@@ -134,7 +134,7 @@ const Navbar = () => {
                                 variant="filled"
                                 size="large"
                                 component={Link}
-                                to="/"
+                                to="/contact"
                                 sx={{
                                     fontSize: '1.4rem',
                                     textTransform: 'capitalize',
