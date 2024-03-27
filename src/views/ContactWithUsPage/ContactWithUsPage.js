@@ -4,6 +4,8 @@ import 'leaflet/dist/leaflet.css';
 import { TextField, Button, Container, Grid, Typography, Paper, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 const theme = createTheme({
     palette: {
@@ -24,14 +26,23 @@ function Map() {
         // Harita oluştur
         const map = L.map('map').setView([40.73061, 31.60501], 16); // Bolu Meslek Yüksekokulu konumu
 
+        // Leaflet varsayılan ikonlarını ayarla
+        delete L.Icon.Default.prototype._getIconUrl;
+        L.Icon.Default.mergeOptions({
+            iconRetinaUrl: markerIcon,
+            iconUrl: markerIcon,
+            shadowUrl: markerShadow
+        });
+
         // Harita katmanı ekle (OpenStreetMap kullanıyoruz)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
         // Konumu işaretleyelim ve bir popup pencere ekleyelim
-        const marker = L.marker([40.73061, 31.60501]).addTo(map);
-        marker.bindPopup('<b>Bolu Meslek Yüksekokulu</b><br>Beşkavaklar Mah., Çakmalar Cad.,<br>Bolu, Turkey').openPopup();
+        L.marker([40.73061, 31.60501]).addTo(map)
+            .bindPopup('<b>Bolu Meslek Yüksekokulu</b><br>Beşkavaklar Mah., Çakmalar Cad.,<br>Bolu, Turkey')
+            .openPopup();
 
         return () => {
             map.remove();
