@@ -7,6 +7,7 @@ import RegisterPage from './views/RegisterPage/RegisterPage';
 import ProfilePage from './views/ProfilePage/ProfilePage';
 import CitiesPage from './views/CitiesPage/CitiesPage';
 import ContactWithUsPage from './views/ContactWithUsPage/ContactWithUsPage';
+import DetailPage from './views/DetailPage/DetailPage';
 
 function AppRoutes() {
     return (
@@ -17,6 +18,8 @@ function AppRoutes() {
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/cities' element={<CitiesPage />} />
             <Route path='/contact' element={<ContactWithUsPage />} />
+            {/* DetailPage'e location_id bilgisini props olarak göndermek için ":locationId" parametresini kullanıyoruz */}
+            <Route path='/detail/:locationId' element={<DetailPage />} />
             {/* Diğer sayfaları da burada tanımlayabilirsiniz */}
         </Routes>
     )

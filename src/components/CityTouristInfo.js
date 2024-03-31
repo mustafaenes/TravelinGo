@@ -4,7 +4,7 @@ import resim2 from "../images/LoginPageImage.jpg"
 import resim3 from "../images/login2.jpg"
 import resim4 from "../images/login3.jpg"
 import { LocationOn, DirectionsBus, Pets, LocalParkingOutlined, Done } from '@mui/icons-material';
-
+import { Link } from 'react-router-dom';
 
 const CityTouristInfo = ({ city }) => {
 
@@ -12,6 +12,7 @@ const CityTouristInfo = ({ city }) => {
         'Bolu': [
             {
                 name: 'Gölcük Tabiat Parkı',
+                location_id: 15683895,
                 location: 'Bolu, Türkiye',
                 description: 'Bolu, Türkiye\'nin Karadeniz Bölgesi\'nde yer alan bir ildir. Bolu, doğal güzellikleri ve tarihi yerleriyle ünlüdür. Bolu\'nun simgelerinden biri, doğal güzelliklere sahip olan Abant Gölü\'dür. Ayrıca, Bolu\'nun etrafı ormanlarla kaplıdır ve doğa sporları için ideal bir destinasyondur.',
                 features: [
@@ -24,6 +25,7 @@ const CityTouristInfo = ({ city }) => {
             },
             {
                 name: 'Abant Gölü',
+                location_id: 15683896,
                 location: 'Bolu, Türkiye',
                 description: 'Bolu, Türkiye\'nin Karadeniz Bölgesi\'nde yer alan bir ildir. Bolu, doğal güzellikleri ve tarihi yerleriyle ünlüdür. Bolu\'nun simgelerinden biri, doğal güzelliklere sahip olan Abant Gölü\'dür. Ayrıca, Bolu\'nun etrafı ormanlarla kaplıdır ve doğa sporları için ideal bir destinasyondur.',
                 features: [
@@ -36,6 +38,7 @@ const CityTouristInfo = ({ city }) => {
             },
             {
                 name: 'Yedi Göller Tabiat Parkı',
+                location_id: 15683897,
                 location: 'Bolu, Türkiye',
                 description: 'Bolu, Türkiye\'nin Karadeniz Bölgesi\'nde yer alan bir ildir. Bolu, doğal güzellikleri ve tarihi yerleriyle ünlüdür. Bolu\'nun simgelerinden biri, doğal güzelliklere sahip olan Abant Gölü\'dür. Ayrıca, Bolu\'nun etrafı ormanlarla kaplıdır ve doğa sporları için ideal bir destinasyondur.',
                 features: [
@@ -50,6 +53,7 @@ const CityTouristInfo = ({ city }) => {
         'İstanbul': [
             {
                 name: "Ayasofya Müzesi",
+                location_id: 15683898,
                 location: "İstanbul/Türkiye",
                 description: `Ayasofya, İstanbul'da bulunan tarihi bir yapıdır. Bizans İmparatoru I. Justinianus tarafından 537 yılında kilise olarak inşa edilmiş, daha sonra camiye çevrilmiş ve şimdi müze olarak kullanılmaktadır. Ayasofya, mimarisi, büyük kubbesi ve tarihi ile dünyanın en önemli anıtlarından biridir.`,
                 image: resim4,
@@ -61,6 +65,7 @@ const CityTouristInfo = ({ city }) => {
             },
             {
                 name: "Topkapı Sarayı",
+                location_id: 15683899,
                 location: "İstanbul/Türkiye",
                 description: `Topkapı Sarayı, İstanbul'da Osmanlı İmparatorlarına ev sahipliği yapmış tarihi bir saraydır. Bugün müze olarak kullanılan saray, İstanbul'un en çok ziyaret edilen turistik mekanlarından biridir. Saray, Osmanlı İmparatorluğu'nun gücünü ve ihtişamını gözler önüne sermektedir.`,
                 image: resim3,
@@ -73,6 +78,7 @@ const CityTouristInfo = ({ city }) => {
             {
                 name: "Galata Kulesi",
                 location: "İstanbul/Türkiye",
+                location_id: 15683890,
                 description: `Galata Kulesi, İstanbul'un Beyoğlu ilçesinde bulunan tarihi bir kuledir. 14. yüzyılda Cenevizliler tarafından inşa edilmiştir. Kule, İstanbul'un panoramik manzarasını sunmasıyla ünlüdür ve şehrin en önemli simgelerinden biridir.`,
                 image: resim2,
                 features: [
@@ -82,15 +88,6 @@ const CityTouristInfo = ({ city }) => {
                 ],
             },
         ],
-        'İzmir': [
-            // İzmir'in turistik mekanları ve özellikleri
-        ],
-        'Ankara': [
-            // Ankara'nın turistik mekanları ve özellikleri
-        ],
-        'Antalya': [
-            // Antalya'nın turistik mekanları ve özellikleri
-        ]
     };
 
 
@@ -98,7 +95,13 @@ const CityTouristInfo = ({ city }) => {
         <>
             <Grid container spacing={5} sx={{ m: 5 }}>
                 {cities[city].map((touristSpot, index) => (
-                    <Grid key={index} container sx={{ mb: 5 }}>
+                    <Grid
+                        key={index}
+                        container
+                        sx={{ mb: 5, textDecoration: 'none' }}
+                        component={Link}
+                        to={`/detail/${touristSpot.location_id}`}
+                    >
                         <Grid item xs={12} sm={12} md={1} />
                         <Grid item xs={12} sm={12} md={4}>
                             <Card sx={{ borderRadius: '1rem', mr: 4 }}>
