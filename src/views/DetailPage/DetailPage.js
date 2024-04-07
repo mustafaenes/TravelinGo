@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
-import { Typography, Grid, Button, Avatar, Paper, ListItemAvatar, List, TextField, Card, CardContent, Box, Container, Divider, ListItem, ListItemIcon, ListItemText, Backdrop, Snackbar, Alert, CircularProgress } from '@mui/material';
+import { Typography, Grid, Button, Avatar, ListItemAvatar, List, IconButton, TextField, Card, CardContent, Divider, ListItem, ListItemIcon, ListItemText, Backdrop, Snackbar, Alert, CircularProgress } from '@mui/material';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Rating from '@mui/material/Rating';
-import SimpleImageSlider from 'react-simple-image-slider';
-import ImageSliderNavigation from 'react-simple-image-slider';
 import { makeStyles } from '@mui/styles';
-import '../../styles/font.css';
 import PhoneIcon from '@mui/icons-material/Phone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EmailIcon from '@mui/icons-material/Email';
@@ -13,12 +10,14 @@ import LanguageIcon from '@mui/icons-material/Language';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import { useParams } from 'react-router-dom';
 import axios from '../../utils/axios';
-import { Send as SendIcon } from '@mui/icons-material';
+import { Send as SendIcon, Edit as EditIcon } from '@mui/icons-material';
 import Carousel from '../../components/Carousel';
+import '../../styles/font.css';
 
 import resim1 from "../../images/LoginPageImage.jpg"
 import resim2 from "../../images/login2.jpg"
 import resim3 from "../../images/login3.jpg"
+import moment from 'moment/moment';
 
 const useStyles = makeStyles({
     sliderContainer: {
@@ -52,6 +51,9 @@ const useStyles = makeStyles({
     commentContent: {
         marginBottom: 1
     },
+    editableComment: {
+        backgroundColor: 'lightblue', // Kullanıcının kendi yorumunu açık mavi renkte göstermek için
+    },
 });
 
 function DetailPage() {
@@ -61,6 +63,10 @@ function DetailPage() {
     const [restaurantGeneralData, setRestaurantGeneralData] = React.useState({});
     const [comments, setComments] = React.useState([]);
     const [commentText, setCommentText] = React.useState('');
+    const [userName, setUserName] = React.useState('');
+    const [editableCommentId, setEditableCommentId] = React.useState(null);
+    const [editCommentId, setEditCommentId] = React.useState(null);
+    const [editedCommentText, setEditedCommentText] = React.useState('');
     const [loading, setLoading] = React.useState(false);
     const [uyari, setUyari] = React.useState(false);
     const [uyariTip, setUyariTip] = React.useState('info');
@@ -72,8 +78,10 @@ function DetailPage() {
     useEffect(() => {
         window.scrollTo(0, 0);
         getRestaurantDetails();
-        fetchComments();
-    }, [locationId])
+        getComments();
+        getUniqueNameFromToken();
+    }, [])
+
 
     const getRestaurantDetails = () => {
         const dataConfig = {
@@ -93,63 +101,86 @@ function DetailPage() {
             });
     }
 
-    const fetchComments = () => {
-        // Burada yorumları getiren bir API çağrısı yapılabilir, örneğin:
-        // axios.get(`/GetComments/${locationId}`)
-        //     .then(response => {
-        //         setComments(response.data);
-        //     }).catch(err => {
-        //         console.error('Yorumları getirirken bir hata oluştu:', err);
-        //     });
-        // Bu örnek kodda, yorumlar yerine sabit bir dizi kullanıyoruz:
-        const dummyComments = [
-            {
-                id: 1,
-                author: "Annie",
-                avatar: "https://api.dicebear.com/8.x/adventurer-neutral/svg?seed=Annie&flip=true&scale=120&radius=20&backgroundColor=ecad80,f2d3b1,ffd5dc,ffdfbf,b6e3f4,c0aede,d1d4f9&backgroundType=gradientLinear,solid&backgroundRotation=0,360,20,40,50",
-                text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                date: "27/02/2014",
-                likes: 13
-            },
-            {
-                id: 2,
-                author: "Mustafa Enes Saatçi",
-                avatar: "https://api.dicebear.com/8.x/adventurer/svg?seed=Beckham&flip=true&scale=120&radius=20&backgroundType=gradientLinear,solid&glassesProbability=25&backgroundColor=d1d4f9,b6e3f4",
-                text: "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
-                date: "28/02/2014",
-                likes: 7
-            },
-            // Diğer yorumlar buraya eklenebilir...
-        ];
-        setComments(dummyComments);
+    const getComments = () => {
+        setLoading(true);
+        axios.get(`/GetCommentsByLocationId/${locationId}`)
+            .then(response => {
+                setComments(response.data);
+                setLoading(false);
+            }).catch(err => {
+                setLoading(false);
+                setUyari(true);
+                setresponseMessage({ ErrorCode: '1', ErrorDescription: 'error_message' });
+            });
     }
 
-    const handleSubmitComment = () => {
-        // Yorum gönderme işlemi burada gerçekleştirilebilir.
-        // Örneğin:
-        // axios.post('/PostComment', { locationId, commentText })
-        //     .then(response => {
-        //         // Yorum başarıyla gönderildiğinde yapılacak işlemler
-        //         console.log('Yorum başarıyla gönderildi.');
-        //         // Yorumları yeniden getirme
-        //         fetchComments();
-        //         // Yorum metnini temizleme
-        //         setCommentText('');
-        //     }).catch(err => {
-        //         console.error('Yorum gönderirken bir hata oluştu:', err);
-        //     });
-        // Bu örnek kodda, gerçek bir API çağrısı yerine, sadece yorumları güncelliyoruz:
-        const newComment = { id: comments.length + 1, text: commentText, author: 'Me' };
-        setComments([...comments, newComment]);
-        setCommentText('');
-    }
+    const getUniqueNameFromToken = () => {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            const decodedToken = JSON.parse(atob(token.split('.')[1]));
+            setUserName(decodedToken.unique_name);
+        }
+    };
 
+
+    const handleSubmit = async () => {
+        setLoading(true);
+        try {
+            await axios.post('/AddOrUpdateComment', {
+                LocationId: locationId,
+                CommentText: commentText
+            });
+            setCommentText('');
+            await getComments();
+        } catch (error) {
+            console.error(error);
+            setLoading(false);
+            setUyari(true);
+            setUyariTip('error');
+            setresponseMessage({ ErrorCode: '1000', ErrorDescription: error.message });
+        }
+    };
 
     const images = [
         { url: resim1 },
         { url: resim2 },
         { url: resim3 },
     ];
+
+
+    // Düzenleme işlevi
+    const handleEdit = (commentId, commentText) => {
+        setEditCommentId(commentId);
+        setEditedCommentText(commentText);
+    };
+
+    // İptal işlevi
+    const handleCancelEdit = () => {
+        setEditCommentId(null);
+        setEditedCommentText('');
+    };
+
+    // Güncelleme işlevi
+    const handleUpdate = async (commentId) => {
+        setLoading(true);
+        try {
+            await axios.put(`/AddOrUpdateComment/${commentId}`, {
+                LocationId: locationId,
+                CommentText: editedCommentText
+            });
+            setEditCommentId(null);
+            setEditedCommentText('');
+            await getComments();
+        } catch (error) {
+            console.error(error);
+            setLoading(false);
+            setUyari(true);
+            setUyariTip('error');
+            setresponseMessage({ ErrorCode: '1000', ErrorDescription: error.message });
+        }
+    };
+
+
 
     const uyariKapat = (event, reason) => {
         if (reason === 'clickaway') {
@@ -279,27 +310,26 @@ function DetailPage() {
                         <Card sx={{ backgroundColor: '#ECFFDC' }} className={classes.commentFormCard}>
                             <CardContent>
                                 <Typography variant="h4" gutterBottom sx={{ fontFamily: 'Shadows Into Light' }}>Yorum Yap</Typography>
-                                <form className={classes.form} onSubmit={handleSubmitComment}>
-                                    <TextField
-                                        label="Your message"
-                                        multiline
-                                        rows={4}
-                                        fullWidth
-                                        variant="outlined"
-                                        required
-                                        value={commentText}
-                                        onChange={(e) => setCommentText(e.target.value)}
-                                    />
-                                    <Button
-                                        variant="outlined"
-                                        color="primary"
-                                        sx={{ mt: 1 }}
-                                        fullWidth
-                                        endIcon={<SendIcon />}
-                                    >
-                                        Gönder
-                                    </Button>
-                                </form>
+                                <TextField
+                                    label="Lütfen yorumunuzu giriniz."
+                                    multiline
+                                    rows={4}
+                                    fullWidth
+                                    variant="outlined"
+                                    required
+                                    value={commentText}
+                                    onChange={(e) => setCommentText(e.target.value)}
+                                />
+                                <Button
+                                    variant="outlined"
+                                    color="primary"
+                                    sx={{ mt: 1 }}
+                                    fullWidth
+                                    endIcon={<SendIcon />}
+                                    onClick={handleSubmit}
+                                >
+                                    Gönder
+                                </Button>
                             </CardContent>
                         </Card>
                     </Grid>
@@ -311,48 +341,98 @@ function DetailPage() {
                             <Card className={classes.commentCard}>
                                 <List sx={{ backgroundColor: '#ECFFDC' }}>
                                     {comments.map((comment, index) => (
-                                        <React.Fragment key={comment.id}>
-                                            <ListItem alignItems="flex-start">
-                                                <ListItemAvatar>
-                                                    <Avatar alt={comment.author} src={comment.avatar} />
-                                                </ListItemAvatar>
-                                                <ListItemText
-                                                    primary={<Typography variant="body1" fontWeight="bold">{comment.author}</Typography>}
-                                                    secondary={
-                                                        <React.Fragment>
-                                                            <Typography
-                                                                component="span"
-                                                                variant="body2"
-                                                                className={classes.commentContent}
-                                                                color="textPrimary"
-                                                            >
-                                                                {comment.text}
-                                                            </Typography>
-                                                            <Typography
-                                                                component="span"
-                                                                variant="body2"
-                                                                color="textSecondary"
-                                                                style={{ display: 'block', marginTop: '0.5rem' }}
-                                                            >
-                                                                {comment.date}
-                                                            </Typography>
-                                                            <Typography
-                                                                component="span"
-                                                                variant="body2"
-                                                                color="textSecondary"
-                                                                style={{ display: 'block' }}
-                                                            >
-                                                                {comment.likes} Likes
-                                                            </Typography>
-                                                        </React.Fragment>
-                                                    }
-                                                />
-                                            </ListItem>
-
+                                        <React.Fragment key={comment.ID}>
+                                            {editCommentId === comment.ID ? (
+                                                <ListItem alignItems="flex-start" className={classes.editableComment}>
+                                                    <ListItemAvatar>
+                                                        <Avatar
+                                                            alt={comment.AUTHOR_NAME}
+                                                            src={`https://api.dicebear.com/8.x/adventurer/svg?seed=${comment.AUTHOR_NAME}&flip=true&scale=120&radius=20&backgroundType=gradientLinear,solid&glassesProbability=25&backgroundColor=d1d4f9,b6e3f4`}
+                                                        />
+                                                    </ListItemAvatar>
+                                                    <ListItemText
+                                                        primary={<Typography variant="body1" fontWeight="bold">{comment.AUTHOR_NAME}</Typography>}
+                                                        secondary={
+                                                            <React.Fragment>
+                                                                <Grid container spacing={2}>
+                                                                    <Grid item xs={12} sm={12} md={12}>
+                                                                        <TextField
+                                                                            fullWidth
+                                                                            multiline
+                                                                            rows={4}
+                                                                            variant="outlined"
+                                                                            value={editedCommentText}
+                                                                            onChange={(e) => setEditedCommentText(e.target.value)}
+                                                                        />
+                                                                    </Grid>
+                                                                    <Grid item xs={12} sm={12} md={6}>
+                                                                        <Button
+                                                                            variant="contained"
+                                                                            color="primary"
+                                                                            fullWidth
+                                                                            onClick={() => handleUpdate(comment.id)}
+                                                                        >
+                                                                            Güncelle
+                                                                        </Button>
+                                                                    </Grid>
+                                                                    <Grid item xs={12} sm={12} md={6}>
+                                                                        <Button
+                                                                            variant="contained"
+                                                                            color="secondary"
+                                                                            fullWidth
+                                                                            onClick={() => handleCancelEdit()}
+                                                                        >
+                                                                            İptal
+                                                                        </Button>
+                                                                    </Grid>
+                                                                </Grid>
+                                                            </React.Fragment>
+                                                        }
+                                                    />
+                                                </ListItem>
+                                            ) : (
+                                                <ListItem alignItems="flex-start" className={comment.AUTHOR_NAME === userName ? classes.editableComment : null}>
+                                                    <ListItemAvatar>
+                                                        <Avatar
+                                                            alt={comment.AUTHOR_NAME}
+                                                            src={`https://api.dicebear.com/8.x/adventurer/svg?seed=${comment.AUTHOR_NAME}&flip=true&scale=120&radius=20&backgroundType=gradientLinear,solid&glassesProbability=25&backgroundColor=d1d4f9,b6e3f4`}
+                                                        />
+                                                    </ListItemAvatar>
+                                                    <ListItemText
+                                                        primary={<Typography variant="body1" fontWeight="bold">{comment.AUTHOR_NAME}</Typography>}
+                                                        secondary={
+                                                            <React.Fragment>
+                                                                <Typography
+                                                                    component="span"
+                                                                    variant="body2"
+                                                                    className={classes.commentContent}
+                                                                    color="textPrimary"
+                                                                >
+                                                                    {comment.COMMENT_TEXT}
+                                                                </Typography>
+                                                                <Typography
+                                                                    component="span"
+                                                                    variant="body2"
+                                                                    color="textSecondary"
+                                                                    style={{ display: 'block', marginTop: '0.5rem' }}
+                                                                >
+                                                                    {moment(comment.COMMENT_DATE).format('DD-MM-YYYY HH:MM')}
+                                                                </Typography>
+                                                            </React.Fragment>
+                                                        }
+                                                    />
+                                                    {comment.AUTHOR_NAME === userName && (
+                                                        <IconButton onClick={() => handleEdit(comment.ID, comment.COMMENT_TEXT)}>
+                                                            <EditIcon />
+                                                        </IconButton>
+                                                    )}
+                                                </ListItem>
+                                            )}
                                             {index !== comments.length - 1 && <Divider variant="fullWidth" component="li" />}
                                         </React.Fragment>
                                     ))}
                                 </List>
+
                             </Card>
                         </Card>
                     </Grid>
