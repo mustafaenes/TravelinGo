@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Typography, Grid, Button, Avatar, IconButton, ListItemAvatar, List, TextField, Card, CardContent, Box, Container, Divider, ListItem, ListItemIcon, ListItemText, Backdrop, Snackbar, Alert, CircularProgress } from '@mui/material';
+import { Typography, Grid, Button, Avatar, Paper, ListItemAvatar, List, TextField, Card, CardContent, Box, Container, Divider, ListItem, ListItemIcon, ListItemText, Backdrop, Snackbar, Alert, CircularProgress } from '@mui/material';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Rating from '@mui/material/Rating';
 import SimpleImageSlider from 'react-simple-image-slider';
@@ -14,6 +14,7 @@ import LocationCityIcon from '@mui/icons-material/LocationCity';
 import { useParams } from 'react-router-dom';
 import axios from '../../utils/axios';
 import { Send as SendIcon } from '@mui/icons-material';
+import Carousel from '../../components/Carousel';
 
 import resim1 from "../../images/LoginPageImage.jpg"
 import resim2 from "../../images/login2.jpg"
@@ -197,15 +198,8 @@ function DetailPage() {
                     <Grid item xs={12} sm={12} md={1} />
                 </Grid>
                 <Grid item xs={12} sm={12} md={2} />
-                <Grid item xs={12} sm={12} md={8}>
-                    <SimpleImageSlider
-                        height='40rem'
-                        width='80rem'
-                        images={images}
-                        showBullets={true}
-                        showNavs={true}
-                        navStyle={ImageSliderNavigation}
-                    />
+                <Grid item xs={12} sm={12} md={8} sx={{ borderRadius: '1.5rem' }}>
+                    <Carousel images={images}></Carousel>
                 </Grid>
                 <Grid item xs={false} sm={false} md={2} />
                 <Grid item xs={12} sm={12} md={1} />
@@ -311,7 +305,9 @@ function DetailPage() {
                     </Grid>
                     <Grid item xs={12} sm={12} md={7}>
                         <Card sx={{ backgroundColor: '#ECFFDC' }}>
-                            <Typography variant="h4" gutterBottom sx={{ fontFamily: 'Shadows Into Light' }}>{comments.length} Yorum</Typography>
+                            <Typography variant="h4" gutterBottom sx={{ fontFamily: 'Shadows Into Light' }}>
+                                {comments.length} Yorum
+                            </Typography>
                             <Card className={classes.commentCard}>
                                 <List sx={{ backgroundColor: '#ECFFDC' }}>
                                     {comments.map((comment, index) => (

@@ -7,7 +7,7 @@ import { Logout } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
     logo: {
-        height: '5rem',
+        height: '4.2rem',
         cursor: 'pointer',
     },
     spacer: {
@@ -94,7 +94,7 @@ const Navbar = () => {
                                 component={Link}
                                 to="/cities"
                                 sx={{
-                                    fontSize: '1.4rem',
+                                    fontSize: '1rem',
                                     textTransform: 'capitalize',
                                     borderRadius: '1.3rem',
                                     color: 'black',
@@ -108,7 +108,7 @@ const Navbar = () => {
                                 component={Link}
                                 to="/"
                                 sx={{
-                                    fontSize: '1.4rem',
+                                    fontSize: '1rem',
                                     textTransform: 'capitalize',
                                     borderRadius: '1.3rem',
                                     color: 'black',
@@ -122,7 +122,7 @@ const Navbar = () => {
                                 component={Link}
                                 to="/"
                                 sx={{
-                                    fontSize: '1.4rem',
+                                    fontSize: '1rem',
                                     textTransform: 'capitalize',
                                     borderRadius: '1.3rem',
                                     color: 'black',
@@ -136,7 +136,7 @@ const Navbar = () => {
                                 component={Link}
                                 to="/contact"
                                 sx={{
-                                    fontSize: '1.4rem',
+                                    fontSize: '1rem',
                                     textTransform: 'capitalize',
                                     borderRadius: '1.3rem',
                                     color: 'black',
@@ -157,7 +157,7 @@ const Navbar = () => {
                                             aria-haspopup="true"
                                             aria-expanded={open ? 'true' : undefined}
                                         >
-                                            <Avatar sx={{ width: 45, height: 45 }}></Avatar>
+                                            <Avatar sx={{ width: 40, height: 40 }}></Avatar>
                                         </IconButton>
                                     </Tooltip>
                                     <Menu
@@ -215,7 +215,7 @@ const Navbar = () => {
                                         component={Link}
                                         to="/login"
                                         sx={{
-                                            fontSize: '1.4rem',
+                                            fontSize: '1rem',
                                             textTransform: 'capitalize',
                                             borderRadius: '2rem',
                                             backgroundColor: 'black',
@@ -231,7 +231,7 @@ const Navbar = () => {
                                         component={Link}
                                         to="/register"
                                         sx={{
-                                            fontSize: '1.4rem',
+                                            fontSize: '1rem',
                                             textTransform: 'capitalize',
                                             borderRadius: '2rem',
                                             backgroundColor: 'black',
