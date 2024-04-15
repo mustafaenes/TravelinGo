@@ -13,11 +13,12 @@ import axios from '../../utils/axios';
 import { Send as SendIcon, Edit as EditIcon } from '@mui/icons-material';
 import Carousel from '../../components/Carousel';
 import '../../styles/font.css';
+import moment from 'moment/moment';
+import 'moment/locale/tr'
 
 import resim1 from "../../images/LoginPageImage.jpg"
 import resim2 from "../../images/login2.jpg"
 import resim3 from "../../images/login3.jpg"
-import moment from 'moment/moment';
 
 const useStyles = makeStyles({
     sliderContainer: {
@@ -117,7 +118,8 @@ function DetailPage() {
     const getUniqueNameFromToken = () => {
         const token = localStorage.getItem('accessToken');
         if (token) {
-            const decodedToken = JSON.parse(atob(token.split('.')[1]));
+            const decodedToken = JSON.parse(decodeURIComponent(escape(atob(token.split('.')[1]))));
+            console.log(userName);
             setUserName(decodedToken.unique_name);
         }
     };
@@ -128,6 +130,7 @@ function DetailPage() {
         try {
             await axios.post('/AddOrUpdateComment', {
                 LocationId: locationId,
+                AuthorName: userName,
                 CommentText: commentText
             });
             setCommentText('');
@@ -164,8 +167,9 @@ function DetailPage() {
     const handleUpdate = async (commentId) => {
         setLoading(true);
         try {
-            await axios.put(`/AddOrUpdateComment/${commentId}`, {
+            await axios.post('/AddOrUpdateComment', {
                 LocationId: locationId,
+                AuthorName: userName,
                 CommentText: editedCommentText
             });
             setEditCommentId(null);
@@ -335,7 +339,7 @@ function DetailPage() {
                     </Grid>
                     <Grid item xs={12} sm={12} md={7}>
                         <Card sx={{ backgroundColor: '#ECFFDC' }}>
-                            <Typography variant="h4" gutterBottom sx={{ fontFamily: 'Shadows Into Light' }}>
+                            <Typography variant="h4" gutterBottom sx={{ fontFamily: 'Shadows Into Light', m: 1 }}>
                                 {comments.length} Yorum
                             </Typography>
                             <Card className={classes.commentCard}>
@@ -416,7 +420,7 @@ function DetailPage() {
                                                                     color="textSecondary"
                                                                     style={{ display: 'block', marginTop: '0.5rem' }}
                                                                 >
-                                                                    {moment(comment.COMMENT_DATE).format('DD-MM-YYYY HH:MM')}
+                                                                    {moment(comment.COMMENT_DATE).locale('tr').format('LLL')}
                                                                 </Typography>
                                                             </React.Fragment>
                                                         }
