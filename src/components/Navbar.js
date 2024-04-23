@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppBar, Toolbar, Button, IconButton, Avatar, Grid, Tooltip, Divider, Menu, MenuItem, ListItemIcon, Backdrop, CircularProgress, Snackbar, Alert } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -38,6 +38,26 @@ const Navbar = () => {
     const showNavbar = !isLoginPage && !isRegisterPage;
     const isAuthenticated = localStorage.getItem('accessToken');
 
+    useEffect(() => {
+        const isTokenExpired = (token) => {
+            if (!token) {
+                return true;
+            }
+
+            const decodedToken = JSON.parse(decodeURIComponent(escape(atob(token.split('.')[1]))));
+            if (!decodedToken.exp) {
+                return true;
+            }
+
+            const currentTime = Date.now() / 1000;
+            return decodedToken.exp < currentTime;
+        };
+
+        if (isAuthenticated && isTokenExpired(isAuthenticated)) {
+            handleLogout();
+        }
+    }, [isAuthenticated]);
+
     const handleLogout = () => {
         localStorage.removeItem('accessToken');
         window.location.reload();
@@ -60,7 +80,7 @@ const Navbar = () => {
             navigate('/');
             setLoading(false);
         }, 500);
-    }
+    };
 
     const uyariKapat = (event, reason) => {
         if (reason === 'clickaway') {
