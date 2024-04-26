@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Card, CardMedia, Divider, Grid, IconButton, Typography } from '@mui/material';
-import { ArrowBack, ArrowForward } from '@mui/icons-material';
+import { Accordion, AccordionDetails, AccordionSummary, Card, CardMedia, Divider, Grid, IconButton, Typography } from '@mui/material';
+import { ArrowBack, ArrowForward, Chat as ChatIcon } from '@mui/icons-material';
 import resim1 from "../../images/RegisterPageImage.jpg"
 import resim2 from "../../images/LoginPageImage.jpg"
 import resim3 from "../../images/login2.jpg"
@@ -9,6 +9,8 @@ import resim5 from "../../images/logo4.jpg"
 import { makeStyles } from '@mui/styles';
 import ReactCardSlider from 'react-card-slider-component';
 import '../../styles/transition.css';
+import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
+import ChatBot from '../../components/ChatBot';
 
 const useStyles = makeStyles((theme) => ({
     cardTitle: {
@@ -51,6 +53,8 @@ function MainPage() {
         { image: resim4, title: "İZMİR", description: "This is a fourth description", clickEvent: sliderClick },
         { image: resim5, title: "ANKARA", description: "This is a fifth description", clickEvent: sliderClick },
     ]
+
+
 
     return (
         <>
@@ -120,6 +124,11 @@ function MainPage() {
                             </Grid>
                         </Grid>
                     </Typography>
+                </Grid>
+                <Grid container justifyContent="flex-end" style={{ position: 'fixed', bottom: 20, right: 20 }}>
+                    <Grid item xs={10} sm={8} md={6} lg={2}>
+                        <ChatBot />
+                    </Grid>
                 </Grid>
             </Grid>
         </>
