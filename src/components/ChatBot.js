@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, TextField, Typography, Paper, IconButton, Accordion, AccordionSummary, AccordionDetails, Avatar } from '@mui/material';
+import { Grid, TextField, Typography, IconButton, Accordion, AccordionSummary, AccordionDetails, Avatar } from '@mui/material';
 import { Send as SendIcon } from '@mui/icons-material';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
+import axios from '../utils/axios';
 
 function ChatBot() {
     const [messages, setMessages] = useState([]);
@@ -13,17 +14,25 @@ function ChatBot() {
         setMessages([{ sender: 'bot', content: 'Hoşgeldiniz! Size nasıl yardımcı olabilirim 😀' }]);
     }, []);
 
-    const sendMessage = () => {
+    const sendMessage = async () => {
         if (inputValue.trim() !== '') {
-            const newMessage = {
-                sender: 'user',
-                content: inputValue
-            };
-            setMessages([...messages, newMessage]);
-            setInputValue('');
-            // Burada chatbot'un cevap vereceği bir fonksiyon çağırılabilir
+            try {
+                const response = await axios.post('/GetChatGPTResponse', { message: inputValue });
+                const assistantMessage = response.data.choices[0].message.content; // Sadece mesaj içeriğini al
+
+                const newMessages = [
+                    ...messages,
+                    { sender: 'user', content: inputValue },
+                    { sender: 'bot', content: assistantMessage }
+                ];
+                setMessages(newMessages);
+                setInputValue('');
+            } catch (error) {
+                console.error('Error:', error.response.data);
+            }
         }
     };
+
 
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
