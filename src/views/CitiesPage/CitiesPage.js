@@ -8,6 +8,7 @@ import resim4 from "../../images/login3.jpg"
 import resim5 from "../../images/logo4.jpg"
 import { ArrowBack, ArrowForward, LocationOn, DirectionsBus, Pets, LocalParkingOutlined, Done } from '@mui/icons-material';
 import CityTouristInfo from '../../components/CityTouristInfo';
+import { Link } from 'react-router-dom';
 
 
 const useStyles = makeStyles({
@@ -115,7 +116,6 @@ function CitiesPage() {
 
     const handleCityChange = (city) => {
         setSelectedCity(city);
-        console.log(city);
     };
 
     const handlePrevImage = () => {
@@ -199,7 +199,10 @@ function CitiesPage() {
                     <Grid container>
                         <Grid item xs={12} sm={12} md={1.5} />
                         <Grid item xs={12} sm={12} md={3} sx={{ cursor: 'pointer' }}>
-                            <Card sx={{ minWidth: 275, margin: '1rem', borderRadius: '1rem' }}>
+                            <Card sx={{ minWidth: 275, margin: '1rem', borderRadius: '1rem' }}
+                                component={Link}
+                                to={`/restaurants/${selectedCity.name}`}
+                            >
                                 <CardMedia
                                     component='img'
                                     height='300'

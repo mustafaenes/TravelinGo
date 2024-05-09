@@ -11,7 +11,7 @@ const CityTouristInfo = ({ city }) => {
     const cities = {
         'Bolu': [
             {
-                name: 'Gölcük Tabiat Parkı',
+                name: 'Bolu Hanzade Restoran',
                 location_id: 15683895,
                 location: 'Bolu, Türkiye',
                 description: 'Bolu, Türkiye\'nin Karadeniz Bölgesi\'nde yer alan bir ildir. Bolu, doğal güzellikleri ve tarihi yerleriyle ünlüdür. Bolu\'nun simgelerinden biri, doğal güzelliklere sahip olan Abant Gölü\'dür. Ayrıca, Bolu\'nun etrafı ormanlarla kaplıdır ve doğa sporları için ideal bir destinasyondur.',
@@ -25,7 +25,7 @@ const CityTouristInfo = ({ city }) => {
             },
             {
                 name: 'Abant Gölü',
-                location_id: 15683896,
+                location_id: 15683895,
                 location: 'Bolu, Türkiye',
                 description: 'Bolu, Türkiye\'nin Karadeniz Bölgesi\'nde yer alan bir ildir. Bolu, doğal güzellikleri ve tarihi yerleriyle ünlüdür. Bolu\'nun simgelerinden biri, doğal güzelliklere sahip olan Abant Gölü\'dür. Ayrıca, Bolu\'nun etrafı ormanlarla kaplıdır ve doğa sporları için ideal bir destinasyondur.',
                 features: [
@@ -38,7 +38,7 @@ const CityTouristInfo = ({ city }) => {
             },
             {
                 name: 'Yedi Göller Tabiat Parkı',
-                location_id: 15683897,
+                location_id: 15683895,
                 location: 'Bolu, Türkiye',
                 description: 'Bolu, Türkiye\'nin Karadeniz Bölgesi\'nde yer alan bir ildir. Bolu, doğal güzellikleri ve tarihi yerleriyle ünlüdür. Bolu\'nun simgelerinden biri, doğal güzelliklere sahip olan Abant Gölü\'dür. Ayrıca, Bolu\'nun etrafı ormanlarla kaplıdır ve doğa sporları için ideal bir destinasyondur.',
                 features: [
@@ -98,7 +98,7 @@ const CityTouristInfo = ({ city }) => {
                     <Grid
                         key={index}
                         container
-                        sx={{ mb: 5, textDecoration: 'none' }}
+                        sx={{ mb: 5, textDecoration: 'none', color: 'black' }}
                         component={Link}
                         to={`/detail/${touristSpot.location_id}`}
                     >
