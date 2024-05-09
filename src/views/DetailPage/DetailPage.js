@@ -344,7 +344,7 @@ function DetailPage() {
                             </Typography>
                             <Card className={classes.commentCard}>
                                 <List sx={{ backgroundColor: '#ECFFDC' }}>
-                                    {comments.map((comment, index) => (
+                                    {Array.isArray(comments) && comments?.map((comment, index) => (
                                         <React.Fragment key={comment.ID}>
                                             {editCommentId === comment.ID ? (
                                                 <ListItem alignItems="flex-start" className={classes.editableComment}>

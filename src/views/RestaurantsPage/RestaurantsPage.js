@@ -1,24 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../../utils/axios';
 import { useParams } from 'react-router-dom';
-import { Button, Card, CardContent, CardMedia, Divider, Grid, IconButton, Typography } from '@mui/material';
+import { Alert, Backdrop, Button, Card, CardContent, CardMedia, CircularProgress, Divider, Grid, IconButton, Snackbar, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { LocationOn, DirectionsBus, Pets, LocalParkingOutlined, Done } from '@mui/icons-material';
-import WifiIcon from '@mui/icons-material/Wifi';
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
-import OutdoorGrillIcon from '@mui/icons-material/OutdoorGrill';
-import LocalParkingIcon from '@mui/icons-material/LocalParking';
-import TakeoutDiningIcon from '@mui/icons-material/TakeoutDining';
-import RoomServiceIcon from '@mui/icons-material/RoomService';
-import AccessibleIcon from '@mui/icons-material/Accessible';
-import ChildFriendlyIcon from '@mui/icons-material/ChildFriendly';
-import PaymentIcon from '@mui/icons-material/Payment';
-import ChairIcon from '@mui/icons-material/Chair';
-import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
-import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-import LocalBarIcon from '@mui/icons-material/LocalBar';
-import WineBarIcon from '@mui/icons-material/WineBar';
+import * as Icons from '@mui/icons-material'
 import resim2 from "../../images/LoginPageImage.jpg"
 import resim3 from "../../images/login2.jpg"
 import resim4 from "../../images/login3.jpg"
@@ -37,66 +23,94 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+function RenderIcons(data) {
+    const IconComponent = Icons[data.data]; // İkon adına göre bileşeni al
+    // Eğer geçerli bir bileşen varsa, JSX olarak döndür
+    return IconComponent ? <IconComponent /> : null;
+}
 
 function RestaurantsPage() {
     const classes = useStyles();
     const { city } = useParams();
+
+
     const [animate, setAnimate] = useState(false);
+    const [restaurantGeneralData, setRestaurantGeneralData] = React.useState({});
+    const [restaurantsFeatures, setRestaurantsFeatures] = React.useState({});
+    const [loading, setLoading] = React.useState(false);
+    const [uyari, setUyari] = React.useState(false);
+    const [uyariTip, setUyariTip] = React.useState('info');
+    const [responseMessage, setresponseMessage] = React.useState({
+        ErrorCode: '0',
+        ErrorDescription: 'success_message'
+    });
 
     useEffect(() => {
-        // Sayfa yüklendiğinde animasyon başlatılıyor.
         window.scrollTo(0, 0);
         setAnimate(true);
     }, []);
-    const [cityDetails, setCityDetails] = React.useState([]);
 
-    const cities =
-        [
-            {
-                name: 'Bolu Hanzade Restoran',
-                location_id: 15683895,
-                location: 'Bolu, Türkiye',
-                description: 'Bolu, Türkiye\'nin Karadeniz Bölgesi\'nde yer alan bir ildir. Bolu, doğal güzellikleri ve tarihi yerleriyle ünlüdür. Bolu\'nun simgelerinden biri, doğal güzelliklere sahip olan Abant Gölü\'dür. Ayrıca, Bolu\'nun etrafı ormanlarla kaplıdır ve doğa sporları için ideal bir destinasyondur.',
-                features: [
-                    { icon: <Pets />, text: 'Evcil hayvan kabul edilir.' },
-                    { icon: <DirectionsBus />, text: 'Yakın Civarlarda Toplu Taşıma Sistemi' },
-                    { icon: <Done />, text: 'Spor Kıyafet Tavsiye Edilir.' },
-                    { icon: <LocalParkingOutlined />, text: 'Ücretsiz Otopark' }
-                ],
-                image: resim2
-            },
-            {
-                name: 'Abant Gölü',
-                location_id: 15683895,
-                location: 'Bolu, Türkiye',
-                description: 'Bolu, Türkiye\'nin Karadeniz Bölgesi\'nde yer alan bir ildir. Bolu, doğal güzellikleri ve tarihi yerleriyle ünlüdür. Bolu\'nun simgelerinden biri, doğal güzelliklere sahip olan Abant Gölü\'dür. Ayrıca, Bolu\'nun etrafı ormanlarla kaplıdır ve doğa sporları için ideal bir destinasyondur.',
-                features: [
-                    { icon: <DirectionsBus />, text: 'Yakın Civarlarda Toplu Taşıma Sistemi' },
-                    { icon: <LocalParkingOutlined />, text: 'Ücretsiz Otopark' },
-                    { icon: <Pets />, text: 'Evcil hayvan kabul edilir.' },
-                    { icon: <Done />, text: 'Spor Kıyafet Tavsiye Edilir.' },
-                ],
-                image: resim3
-            },
-            {
-                name: 'Yedi Göller Tabiat Parkı',
-                location_id: 15683895,
-                location: 'Bolu, Türkiye',
-                description: 'Bolu, Türkiye\'nin Karadeniz Bölgesi\'nde yer alan bir ildir. Bolu, doğal güzellikleri ve tarihi yerleriyle ünlüdür. Bolu\'nun simgelerinden biri, doğal güzelliklere sahip olan Abant Gölü\'dür. Ayrıca, Bolu\'nun etrafı ormanlarla kaplıdır ve doğa sporları için ideal bir destinasyondur.',
-                features: [
-                    { icon: <Done />, text: 'Spor Kıyafet Tavsiye Edilir.' },
-                    { icon: <LocalParkingOutlined />, text: 'Ücretsiz Otopark' },
-                    { icon: <DirectionsBus />, text: 'Yakın Civarlarda Toplu Taşıma Sistemi' },
-                    { icon: <Pets />, text: 'Evcil hayvan kabul edilir.' },
-                ],
-                image: resim4
-            }
-        ]
+    useEffect(() => {
+        getAllRestaurantsInformations(city);
+        getAllRestaurantsFeatures(city);
+    }, []);
 
+
+    const getAllRestaurantsInformations = (City) => {
+        const dataConfig = {
+            headers: { 'Content-Type': 'application/json' }
+        };
+
+        setLoading(true);
+        axios.get(`/GetAllRestraurantsInformations/${City}`, dataConfig)
+            .then(response => {
+                const restaurantData = response.data;
+                setRestaurantGeneralData(restaurantData);
+                setLoading(false);
+            }).catch(err => {
+                setLoading(false);
+                setUyari(true);
+                setresponseMessage({ ErrorCode: '1', ErrorDescription: 'error_message' });
+            });
+    }
+
+    const getAllRestaurantsFeatures = (City) => {
+        const dataConfig = {
+            headers: { 'Content-Type': 'application/json' }
+        };
+
+        setLoading(true);
+        axios.get(`/GetAllRestraurantsFeatures/${City}`, dataConfig)
+            .then(response => {
+                const data = response.data;
+                setRestaurantsFeatures(data);
+                setLoading(false);
+            }).catch(err => {
+                setLoading(false);
+                setUyari(true);
+                setresponseMessage({ ErrorCode: '1', ErrorDescription: 'error_message' });
+            });
+    }
+
+    const uyariKapat = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setUyari(false);
+    };
 
 
     return (
         <>
+            <Backdrop className={classes.backdrop} open={loading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+            <Snackbar open={uyari} autoHideDuration={2000} onClose={uyariKapat}
+                anchorOrigin={{ vertical: "top", horizontal: "left" }}>
+                <Alert onClose={uyariKapat} variant='filled' severity={uyariTip}>
+                    {responseMessage.ErrorDescription}
+                </Alert>
+            </Snackbar>
             <Grid container component="main" spacing={2} justifyContent="center" className={`${classes.animateIn} ${animate ? classes.animateInActive : ''}`}>
                 <Grid item xs={12} sm={12} md={3} />
                 <Grid item xs={12} sm={12} md={6}>
@@ -142,27 +156,28 @@ function RestaurantsPage() {
                     <Grid item xs={12} sm={12} md={2}></Grid>
                 </Grid>
                 <Grid container spacing={5} sx={{ m: 5 }}>
-                    {cities?.map((touristSpot, index) => (
+                    {Array.isArray(restaurantGeneralData) && restaurantGeneralData.map((restaurant, index) => (
                         <Grid
                             key={index}
                             container
                             sx={{ mb: 5, textDecoration: 'none', color: 'black' }}
                             component={Link}
-                            to={`/detail/${touristSpot.location_id}`}
+                            to={`/detail/${restaurant.location_id}`}
                         >
                             <Grid item xs={12} sm={12} md={1} />
                             <Grid item xs={12} sm={12} md={4}>
                                 <Card sx={{ borderRadius: '1rem', mr: 4 }}>
                                     <CardMedia
                                         component="img"
-                                        image={touristSpot.image}
-                                        alt={touristSpot.name}
+                                        image={resim2}
+                                        // image={restaurant.url}
+                                        alt={restaurant.name}
                                     />
                                 </Card>
                             </Grid>
                             <Grid item xs={12} sm={12} md={4}>
                                 <Typography variant="h4" gutterBottom align="left">
-                                    {touristSpot.name}
+                                    {restaurant.name}
                                 </Typography>
                                 <Typography
                                     variant="body2"
@@ -173,17 +188,18 @@ function RestaurantsPage() {
                                     sx={{ textDecoration: 'underline', mb: 3 }}
                                 >
                                     <LocationOn sx={{ marginBottom: '0.5rem' }} />
-                                    {touristSpot.location + '/Türkiye'}
+                                    {restaurant.location + '/Türkiye'}
                                 </Typography>
                                 <Typography variant="body1" color="text.secondary">
-                                    {touristSpot.description}
+                                    {restaurant.description}
                                 </Typography>
                                 <Typography variant="h6" color="text.primary" sx={{ marginTop: '1rem' }} >
                                     <b>{'Bunun için Mükemmel:'}</b>
                                 </Typography>
-                                {touristSpot.features.map((feature, index) => (
+                                {Array.isArray(restaurantsFeatures) && restaurantsFeatures.map((feature, featureIndex) => (
+                                    feature.location_id === restaurant.location_id &&
                                     <Button
-                                        key={index}
+                                        key={featureIndex}
                                         variant='outlined'
                                         size='medium'
                                         disabled
@@ -197,7 +213,8 @@ function RestaurantsPage() {
                                             border: '0'
                                         }}
                                     >
-                                        {feature.icon}{' '}{feature.text}
+                                        {/* Icon için uygun şekilde buraya ekleme */}
+                                        <RenderIcons data={feature.icon} />{' '}{feature.text}
                                     </Button>
                                 ))}
                             </Grid>
@@ -205,6 +222,7 @@ function RestaurantsPage() {
                         </Grid>
                     ))}
                 </Grid>
+
             </Grid>
         </>
     )
