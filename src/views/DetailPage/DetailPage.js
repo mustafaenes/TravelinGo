@@ -296,7 +296,7 @@ function DetailPage() {
                             style={{ width: '100%', height: '440px', borderRadius: '1rem', border: 'none' }}
                             loading="lazy"
                             allowFullScreen
-                            src={`https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12058.864650261672!2d31.6051534!3d40.7308611!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x409d3f6c08644e5d%3A0xd63ac0b020428182!2s${restaurantGeneralData.NAME}!5e0!3m2!1sen!2str!4v1659193880316!5m2!1sen!2str`}
+                            src={restaurantGeneralData.LOCATION_URL}
                         ></iframe>
                     </Grid>
                     <Grid item xs={12} sm={12} md={1} />
