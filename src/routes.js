@@ -9,6 +9,10 @@ import CitiesPage from './views/CitiesPage/CitiesPage';
 import ContactWithUsPage from './views/ContactWithUsPage/ContactWithUsPage';
 import DetailPage from './views/DetailPage/DetailPage';
 import RestaurantsPage from './views/RestaurantsPage/RestaurantsPage';
+import HotelsPage from './views/HotelsPage/HotelsPage';
+import DestinationsPage from './views/DestinationsPage/DestionationsPage';
+import HotelDetailPage from './views/HotelsPage/HotelDetailPage';
+import DestinationDetailPage from './views/DestinationsPage/DestinationDetailPage';
 
 function AppRoutes() {
     return (
@@ -21,6 +25,10 @@ function AppRoutes() {
             <Route path='/contact' element={<ContactWithUsPage />} />
             <Route path='/detail/:locationId' element={<DetailPage />} />
             <Route path='/restaurants/:city' element={<RestaurantsPage />} />
+            <Route path='/hotels/:city' element={<HotelsPage />} />
+            <Route path='/destinations/:city' element={<DestinationsPage />} />
+            <Route path='/HotelDetail/:locationId' element={<HotelDetailPage />} />
+            <Route path='/DestinationDetail/:locationId' element={<DestinationDetailPage />} />
             {/* Diğer sayfaları da burada tanımlayabilirsiniz */}
         </Routes>
     )

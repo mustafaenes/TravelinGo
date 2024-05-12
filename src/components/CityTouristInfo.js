@@ -5,6 +5,7 @@ import resim3 from "../images/login2.jpg"
 import resim4 from "../images/login3.jpg"
 import { LocationOn, DirectionsBus, Pets, LocalParkingOutlined, Done } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import '../styles/font.css';
 
 const CityTouristInfo = ({ city }) => {
 
@@ -24,23 +25,23 @@ const CityTouristInfo = ({ city }) => {
                 image: resim2
             },
             {
-                name: 'Abant Gölü',
-                location_id: 15683895,
+                name: 'Kubbealtı',
+                location_id: 2673865,
                 location: 'Bolu, Türkiye',
-                description: 'Bolu, Türkiye\'nin Karadeniz Bölgesi\'nde yer alan bir ildir. Bolu, doğal güzellikleri ve tarihi yerleriyle ünlüdür. Bolu\'nun simgelerinden biri, doğal güzelliklere sahip olan Abant Gölü\'dür. Ayrıca, Bolu\'nun etrafı ormanlarla kaplıdır ve doğa sporları için ideal bir destinasyondur.',
+                description: 'Yoğurtlu Gözlemenin Tecilli Markası ile Mucidi. Anadolu\'nun geleneksel lezzetini tarihi, ferah ve otantik bir ortamda Kubbealtı\'nda hizmetinize sunuyoruz. 630 yıllık mekânda 13 yıl önce keşfedilmiş lezzet, yoğurtlu gözleme, 2005 ten beri... Hoşgeldiniz.',
                 features: [
                     { icon: <DirectionsBus />, text: 'Yakın Civarlarda Toplu Taşıma Sistemi' },
-                    { icon: <LocalParkingOutlined />, text: 'Ücretsiz Otopark' },
+                    { icon: <LocalParkingOutlined />, text: 'Ücretli Otopark' },
                     { icon: <Pets />, text: 'Evcil hayvan kabul edilir.' },
                     { icon: <Done />, text: 'Spor Kıyafet Tavsiye Edilir.' },
                 ],
                 image: resim3
             },
             {
-                name: 'Yedi Göller Tabiat Parkı',
-                location_id: 15683895,
+                name: 'OKLAVA',
+                location_id: 14798874,
                 location: 'Bolu, Türkiye',
-                description: 'Bolu, Türkiye\'nin Karadeniz Bölgesi\'nde yer alan bir ildir. Bolu, doğal güzellikleri ve tarihi yerleriyle ünlüdür. Bolu\'nun simgelerinden biri, doğal güzelliklere sahip olan Abant Gölü\'dür. Ayrıca, Bolu\'nun etrafı ormanlarla kaplıdır ve doğa sporları için ideal bir destinasyondur.',
+                description: 'Yöresel mutfak, Anadolu kadınlarının el emeği, özgün lezzet, güler yüzlü dinamik personel, şık, şirin, ferah ortam, şehir merkezine hakim konum.',
                 features: [
                     { icon: <Done />, text: 'Spor Kıyafet Tavsiye Edilir.' },
                     { icon: <LocalParkingOutlined />, text: 'Ücretsiz Otopark' },
@@ -113,7 +114,7 @@ const CityTouristInfo = ({ city }) => {
                             </Card>
                         </Grid>
                         <Grid item xs={12} sm={12} md={4}>
-                            <Typography variant="h4" gutterBottom align="left">
+                            <Typography variant="h4" gutterBottom align="left" sx={{ fontFamily: 'Pacifico' }}>
                                 {touristSpot.name}
                             </Typography>
                             <Typography
@@ -124,13 +125,13 @@ const CityTouristInfo = ({ city }) => {
                                 alignItems="center"
                                 sx={{ textDecoration: 'underline', mb: 3 }}
                             >
-                                <LocationOn sx={{ marginBottom: '0.5rem' }} />
+                                <LocationOn sx={{ marginBottom: '0.5rem', fontFamily: 'Roboto' }} />
                                 {touristSpot.location}
                             </Typography>
-                            <Typography variant="body1" color="text.secondary">
+                            <Typography variant="body1" color="text.secondary" sx={{ fontFamily: 'Roboto' }}>
                                 {touristSpot.description}
                             </Typography>
-                            <Typography variant="h6" color="text.primary" sx={{ marginTop: '1rem' }} >
+                            <Typography variant="h6" color="text.primary" sx={{ marginTop: '1rem', fontFamily: 'Roboto' }} >
                                 <b>{'Bunun için Mükemmel:'}</b>
                             </Typography>
                             {touristSpot.features.map((feature, index) => (
@@ -146,7 +147,8 @@ const CityTouristInfo = ({ city }) => {
                                         margin: '1rem 0.5rem 1rem 0.5rem',
                                         color: 'black',
                                         backgroundColor: '#f0ebcc',
-                                        border: '0'
+                                        border: '0',
+                                        fontFamily: 'Roboto'
                                     }}
                                 >
                                     {feature.icon}{' '}{feature.text}

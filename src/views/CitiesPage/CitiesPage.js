@@ -9,6 +9,7 @@ import resim5 from "../../images/logo4.jpg"
 import { ArrowBack, ArrowForward, LocationOn, DirectionsBus, Pets, LocalParkingOutlined, Done } from '@mui/icons-material';
 import CityTouristInfo from '../../components/CityTouristInfo';
 import { Link } from 'react-router-dom';
+import '../../styles/font.css';
 
 
 const useStyles = makeStyles({
@@ -174,10 +175,10 @@ function CitiesPage() {
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} />
                 <Grid item xs={12} sm={12} md={4}>
-                    <Typography variant="h4" gutterBottom align="center">
-                        {selectedCity.name}
+                    <Typography variant="h3" gutterBottom align="center" sx={{ fontFamily: 'Shadows Into Light' }}>
+                        {selectedCity.name.toUpperCase()}
                     </Typography>
-                    <Typography variant="body1" align="center">
+                    <Typography variant="h5" align="center" sx={{ fontFamily: 'Shadows Into Light' }}>
                         {selectedCityInfo}
                     </Typography>
                 </Grid>
@@ -198,10 +199,11 @@ function CitiesPage() {
                 <Grid item xs={12} sm={12} md={12} sx={{ mb: 5 }}>
                     <Grid container>
                         <Grid item xs={12} sm={12} md={1.5} />
-                        <Grid item xs={12} sm={12} md={3} sx={{ cursor: 'pointer' }}>
+                        <Grid item xs={12} sm={12} md={3} sx={{ cursor: 'pointer', textDecoration: 'none' }}
+                            component={Link}
+                            to={`/restaurants/${selectedCity.name}`}
+                        >
                             <Card sx={{ minWidth: 275, margin: '1rem', borderRadius: '1rem' }}
-                                component={Link}
-                                to={`/restaurants/${selectedCity.name}`}
                             >
                                 <CardMedia
                                     component='img'
@@ -210,13 +212,16 @@ function CitiesPage() {
                                     title="Restoranlar"
                                 />
                                 <CardContent>
-                                    <Typography variant="h5" component="h2" textAlign='center'>
-                                        Restoranlar
+                                    <Typography variant="h5" component="h2" textAlign='center' sx={{ fontFamily: 'Pacifico' }}>
+                                        RESTORANLAR
                                     </Typography>
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3} sx={{ cursor: 'pointer' }}>
+                        <Grid item xs={12} sm={12} md={3} sx={{ cursor: 'pointer', textDecoration: 'none' }}
+                            component={Link}
+                            to={`/hotels/${selectedCity.name}`}
+                        >
                             <Card sx={{ minWidth: 275, margin: '1rem', borderRadius: '1rem' }}>
                                 <CardMedia
                                     component='img'
@@ -225,13 +230,16 @@ function CitiesPage() {
                                     title="Oteller"
                                 />
                                 <CardContent>
-                                    <Typography variant="h5" component="h2" textAlign='center'>
-                                        Oteller
+                                    <Typography variant="h5" component="h2" textAlign='center' sx={{ fontFamily: 'Pacifico' }}>
+                                        OTELLER
                                     </Typography>
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3} sx={{ cursor: 'pointer' }}>
+                        <Grid item xs={12} sm={12} md={3} sx={{ cursor: 'pointer', textDecoration: 'none' }}
+                            component={Link}
+                            to={`/destinations/${selectedCity.name}`}
+                        >
                             <Card sx={{ minWidth: 275, margin: '1rem', borderRadius: '1rem' }}>
                                 <CardMedia
                                     component='img'
@@ -240,8 +248,8 @@ function CitiesPage() {
                                     title="Destinasyonlar"
                                 />
                                 <CardContent>
-                                    <Typography variant="h5" component="h2" textAlign='center'>
-                                        Destinasyonlar
+                                    <Typography variant="h5" component="h2" textAlign='center' sx={{ fontFamily: 'Pacifico' }}>
+                                        DESTİNASYONLAR
                                     </Typography>
                                 </CardContent>
                             </Card>

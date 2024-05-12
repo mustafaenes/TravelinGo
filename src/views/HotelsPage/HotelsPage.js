@@ -30,7 +30,7 @@ function RenderIcons(data) {
     return IconComponent ? <IconComponent /> : null;
 }
 
-function RestaurantsPage() {
+function HotelsPage() {
     const classes = useStyles();
     const { city } = useParams();
 
@@ -63,7 +63,7 @@ function RestaurantsPage() {
         };
 
         setLoading(true);
-        axios.get(`/GetAllRestraurantsInformations/${City}`, dataConfig)
+        axios.get(`/GetAllHotelsInformations/${City}`, dataConfig)
             .then(response => {
                 const restaurantData = response.data;
                 setRestaurantGeneralData(restaurantData);
@@ -119,7 +119,7 @@ function RestaurantsPage() {
                         <CardMedia
                             component="img"
                             image={resim2}
-                            alt={'Bolu'}
+                            alt={`${city}`}
                         />
                     </Card>
                 </Grid>
@@ -128,7 +128,7 @@ function RestaurantsPage() {
                     <Grid item xs={12} sm={12} md={4} />
                     <Grid item xs={12} sm={12} md={4}>
                         <Typography variant="h3" gutterBottom align="center" marginTop={2} sx={{ fontFamily: 'Shadows Into Light' }}>
-                            {city}
+                            BOLU
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={12} md={4} />
@@ -144,7 +144,7 @@ function RestaurantsPage() {
                     <Grid item xs={12} sm={12} md={1} />
                     <Grid item xs={12} sm={12} md={5}>
                         <Typography variant="h3" gutterBottom align="left" marginTop={2} sx={{ fontFamily: 'Shadows Into Light' }}>
-                            Tüm Restoranlar
+                            Tüm Oteller
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={12} md={6} />
@@ -163,7 +163,7 @@ function RestaurantsPage() {
                             container
                             sx={{ mb: 5, textDecoration: 'none', color: 'black' }}
                             component={Link}
-                            to={`/detail/${restaurant.location_id}`}
+                            to={`/HotelDetail/${restaurant.location_id}`}
                         >
                             <Grid item xs={12} sm={12} md={1} />
                             <Grid item xs={12} sm={12} md={4}>
@@ -177,7 +177,7 @@ function RestaurantsPage() {
                                 </Card>
                             </Grid>
                             <Grid item xs={12} sm={12} md={4}>
-                                <Typography variant="h4" gutterBottom align="left">
+                                <Typography variant="h4" gutterBottom align="left" sx={{ fontFamily: 'Pacifico' }}>
                                     {restaurant.name}
                                 </Typography>
                                 <Typography
@@ -186,15 +186,15 @@ function RestaurantsPage() {
                                     color="text.secondary"
                                     display="flex"
                                     alignItems="center"
-                                    sx={{ textDecoration: 'underline', mb: 3 }}
+                                    sx={{ textDecoration: 'underline', mb: 3, fontFamily: 'Roboto' }}
                                 >
                                     <LocationOn sx={{ marginBottom: '0.5rem' }} />
                                     {restaurant.location + '/Türkiye'}
                                 </Typography>
-                                <Typography variant="body1" color="text.secondary">
+                                <Typography variant="body1" color="text.secondary" sx={{ fontFamily: 'Roboto' }}>
                                     {restaurant.description}
                                 </Typography>
-                                <Typography variant="h6" color="text.primary" sx={{ marginTop: '1rem' }} >
+                                <Typography variant="h6" color="text.primary" sx={{ marginTop: '1rem', fontFamily: 'Roboto' }} >
                                     <b>{'Bunun için Mükemmel:'}</b>
                                 </Typography>
                                 {Array.isArray(restaurantsFeatures) && restaurantsFeatures.map((feature, featureIndex) => (
@@ -211,7 +211,8 @@ function RestaurantsPage() {
                                             margin: '1rem 0.5rem 1rem 0.5rem',
                                             color: 'black',
                                             backgroundColor: '#f0ebcc',
-                                            border: '0'
+                                            border: '0',
+                                            fontFamily: 'Roboto'
                                         }}
                                     >
                                         {/* Icon için uygun şekilde buraya ekleme */}
@@ -231,4 +232,4 @@ function RestaurantsPage() {
 
 
 
-export default RestaurantsPage
+export default HotelsPage;

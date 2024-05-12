@@ -57,7 +57,7 @@ const useStyles = makeStyles({
     },
 });
 
-function DetailPage() {
+function HotelDetailPage() {
     const classes = useStyles();
 
     const { locationId } = useParams();
@@ -90,7 +90,7 @@ function DetailPage() {
         };
 
         setLoading(true);
-        axios.get(`/GetRestaurantDetails/${locationId}`, dataConfig)
+        axios.get(`/GetHotelDetails/${locationId}`, dataConfig)
             .then(response => {
                 const restaurantData = response.data[0];
                 setRestaurantGeneralData(restaurantData);
@@ -210,7 +210,7 @@ function DetailPage() {
                         <Typography color="inherit" sx={{ textDecoration: 'underline' }}><i>Anasayfa</i></Typography>
                         <Typography color="inherit" sx={{ textDecoration: 'underline' }}><i>Şehirler</i></Typography>
                         <Typography color="inherit" sx={{ textDecoration: 'underline' }}><i>{restaurantGeneralData.CITY}</i></Typography>
-                        <Typography color="inherit" sx={{ textDecoration: 'underline' }}><i>Restoranlar</i></Typography>
+                        <Typography color="inherit" sx={{ textDecoration: 'underline' }}><i>Oteller</i></Typography>
                         <Typography color="textPrimary" sx={{ textDecoration: 'underline' }}><i>{restaurantGeneralData.NAME}</i></Typography>
                     </Breadcrumbs>
                 </Grid>
@@ -447,4 +447,4 @@ function DetailPage() {
     )
 }
 
-export default DetailPage;
+export default HotelDetailPage;

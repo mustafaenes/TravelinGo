@@ -122,7 +122,7 @@ const Navbar = () => {
                                 }}>
                                 Şehirler
                             </Button>
-                            <Button
+                            {/* <Button
                                 variant="filled"
                                 size="large"
                                 component={Link}
@@ -135,7 +135,7 @@ const Navbar = () => {
                                     marginRight: 1,
                                 }}>
                                 Restoranlar
-                            </Button>
+                            </Button> */}
                             <Button
                                 variant="filled"
                                 size="large"
