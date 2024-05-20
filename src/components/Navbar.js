@@ -140,7 +140,7 @@ const Navbar = () => {
                                 variant="filled"
                                 size="large"
                                 component={Link}
-                                to="/"
+                                to="/aboutUs"
                                 sx={{
                                     fontSize: '1rem',
                                     textTransform: 'capitalize',

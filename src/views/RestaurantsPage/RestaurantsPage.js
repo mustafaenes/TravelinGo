@@ -177,7 +177,7 @@ function RestaurantsPage() {
                                 </Card>
                             </Grid>
                             <Grid item xs={12} sm={12} md={4}>
-                                <Typography variant="h4" gutterBottom align="left">
+                                <Typography variant="h4" gutterBottom align="left" sx={{ fontFamily: 'Pacifico' }}>
                                     {restaurant.name}
                                 </Typography>
                                 <Typography
@@ -186,15 +186,15 @@ function RestaurantsPage() {
                                     color="text.secondary"
                                     display="flex"
                                     alignItems="center"
-                                    sx={{ textDecoration: 'underline', mb: 3 }}
+                                    sx={{ textDecoration: 'underline', mb: 3, fontFamily: 'Roboto' }}
                                 >
                                     <LocationOn sx={{ marginBottom: '0.5rem' }} />
                                     {restaurant.location + '/Türkiye'}
                                 </Typography>
-                                <Typography variant="body1" color="text.secondary">
+                                <Typography variant="body1" color="text.secondary" sx={{ fontFamily: 'Roboto' }}>
                                     {restaurant.description}
                                 </Typography>
-                                <Typography variant="h6" color="text.primary" sx={{ marginTop: '1rem' }} >
+                                <Typography variant="h6" color="text.primary" sx={{ marginTop: '1rem', fontFamily: 'Roboto' }} >
                                     <b>{'Bunun için Mükemmel:'}</b>
                                 </Typography>
                                 {Array.isArray(restaurantsFeatures) && restaurantsFeatures.map((feature, featureIndex) => (
@@ -211,10 +211,10 @@ function RestaurantsPage() {
                                             margin: '1rem 0.5rem 1rem 0.5rem',
                                             color: 'black',
                                             backgroundColor: '#f0ebcc',
-                                            border: '0'
+                                            border: '0',
+                                            fontFamily: 'Roboto'
                                         }}
                                     >
-                                        {/* Icon için uygun şekilde buraya ekleme */}
                                         <RenderIcons data={feature.icon} />{' '}{feature.text}
                                     </Button>
                                 ))}

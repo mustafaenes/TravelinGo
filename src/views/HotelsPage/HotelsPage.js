@@ -215,7 +215,6 @@ function HotelsPage() {
                                             fontFamily: 'Roboto'
                                         }}
                                     >
-                                        {/* Icon için uygun şekilde buraya ekleme */}
                                         <RenderIcons data={feature.icon} />{' '}{feature.text}
                                     </Button>
                                 ))}

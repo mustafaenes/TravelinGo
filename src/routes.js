@@ -13,6 +13,7 @@ import HotelsPage from './views/HotelsPage/HotelsPage';
 import DestinationsPage from './views/DestinationsPage/DestionationsPage';
 import HotelDetailPage from './views/HotelsPage/HotelDetailPage';
 import DestinationDetailPage from './views/DestinationsPage/DestinationDetailPage';
+import AboutUsPage from './views/AboutUsPage/AboutUsPage';
 
 function AppRoutes() {
     return (
@@ -22,6 +23,7 @@ function AppRoutes() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/cities' element={<CitiesPage />} />
+            <Route path='/aboutUs' element={<AboutUsPage />} />
             <Route path='/contact' element={<ContactWithUsPage />} />
             <Route path='/detail/:locationId' element={<DetailPage />} />
             <Route path='/restaurants/:city' element={<RestaurantsPage />} />
