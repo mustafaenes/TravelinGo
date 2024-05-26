@@ -1,8 +1,8 @@
 import React from 'react'
 import { Grid, Card, CardMedia, Typography, Button, CssBaseline } from '@mui/material';
-import resim2 from "../images/LoginPageImage.jpg"
-import resim3 from "../images/login2.jpg"
-import resim4 from "../images/login3.jpg"
+import resim2 from "../images/hanzade.jpg"
+import resim3 from "../images/Kubbealtı.jpg"
+import resim4 from "../images/oklava.jpg"
 import { LocationOn, DirectionsBus, Pets, LocalParkingOutlined, Done } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import '../styles/font.css';
@@ -108,6 +108,7 @@ const CityTouristInfo = ({ city }) => {
                             <Card sx={{ borderRadius: '1rem', mr: 4 }}>
                                 <CardMedia
                                     component="img"
+                                    height={'450'}
                                     image={touristSpot.image}
                                     alt={touristSpot.name}
                                 />

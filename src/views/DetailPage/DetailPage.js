@@ -236,7 +236,7 @@ function DetailPage() {
                         <Typography variant="h2" sx={{ fontFamily: 'Shadows Into Light' }}>
                             {restaurantGeneralData.NAME}
                         </Typography>
-                        <Rating name="rating" value={restaurantGeneralData.RATING} precision={0.5} readOnly />
+                        <Rating name="rating" value={4.5} precision={0.5} readOnly />
                     </Grid>
                     <Grid item xs={12} sm={12} md={3} >
                         <Typography variant="body1" gutterBottom sx={{ fontFamily: 'Shadows Into Light', mt: 8 }}>

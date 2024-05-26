@@ -3,9 +3,9 @@ import { Accordion, AccordionDetails, AccordionSummary, Card, CardMedia, Divider
 import { ArrowBack, ArrowForward, Chat as ChatIcon } from '@mui/icons-material';
 import resim1 from "../../images/RegisterPageImage.jpg"
 import resim2 from "../../images/LoginPageImage.jpg"
-import resim3 from "../../images/login2.jpg"
-import resim4 from "../../images/login3.jpg"
-import resim5 from "../../images/logo4.jpg"
+import resim3 from "../../images/GazelleResort.jpg"
+import resim4 from "../../images/gölcük.jpg"
+import resim5 from "../../images/narven4.jpg"
 import { makeStyles } from '@mui/styles';
 import ReactCardSlider from 'react-card-slider-component';
 import '../../styles/transition.css';
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 function MainPage() {
     const classes = useStyles();
     const [currentImage, setCurrentImage] = useState(0);
-    const images = [resim3, resim4, resim2, resim1];
+    const images = [resim3, resim4, resim5];
 
     const handlePrevImage = () => {
         setCurrentImage((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));

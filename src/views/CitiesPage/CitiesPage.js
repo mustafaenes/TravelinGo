@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Button, Card, CardContent, CardMedia, Divider, Grid, IconButton, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import resim1 from "../../images/RegisterPageImage.jpg"
-import resim2 from "../../images/LoginPageImage.jpg"
-import resim3 from "../../images/login2.jpg"
-import resim4 from "../../images/login3.jpg"
-import resim5 from "../../images/logo4.jpg"
+import resim1 from "../../images/narven3.jpg"
+import resim2 from "../../images/GazelleResort.jpg"
+import resim3 from "../../images/gölcük.jpg"
+import resim4 from "../../images/narven4.jpg"
+import resim5 from "../../images/GazelleResort.jpg"
 import { ArrowBack, ArrowForward, LocationOn, DirectionsBus, Pets, LocalParkingOutlined, Done } from '@mui/icons-material';
 import CityTouristInfo from '../../components/CityTouristInfo';
 import { Link } from 'react-router-dom';
@@ -38,7 +38,7 @@ const cities = [
         info: `Bolu, Türkiye'nin Karadeniz Bölgesi'nde yer alan bir ildir. Bolu, doğal güzellikleri ve tarihi yerleriyle ünlüdür. 
       Bolu'nun simgelerinden biri, doğal güzelliklere sahip olan Abant Gölü'dür. Ayrıca, Bolu'nun etrafı ormanlarla kaplıdır ve doğa sporları için ideal bir destinasyondur.`,
         images: [
-            resim1, resim2, resim3
+            resim2, resim3, resim1
         ],
         features: [
             { icon: <Pets />, text: 'Evcil hayvan kabul edilir.' },
