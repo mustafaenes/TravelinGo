@@ -68,6 +68,7 @@ function DetailPage() {
     const [editableCommentId, setEditableCommentId] = React.useState(null);
     const [editCommentId, setEditCommentId] = React.useState(null);
     const [editedCommentText, setEditedCommentText] = React.useState('');
+    const [detailImages, setDetailImages] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [uyari, setUyari] = React.useState(false);
     const [uyariTip, setUyariTip] = React.useState('info');
@@ -81,6 +82,7 @@ function DetailPage() {
         getRestaurantDetails();
         getComments();
         getUniqueNameFromToken();
+        getRestaurantImages();
     }, [])
 
 
@@ -99,6 +101,27 @@ function DetailPage() {
                 setLoading(false);
                 setUyari(true);
                 setresponseMessage({ ErrorCode: '1', ErrorDescription: 'error_message' });
+            });
+    }
+
+    const getRestaurantImages = () => {
+        let detailImagesList = [];
+
+        const dataConfig = {
+            headers: { 'Content-Type': 'application/json' }
+        };
+
+        setLoading(true);
+        axios.get(`/GetDetailImages/${locationId}`, dataConfig)
+            .then(response => {
+                if (response.data.length > 0) {
+                    const images = response.data;
+                    detailImagesList = images.map(image => ({ url: image.IMAGE_URL }));
+                } else {
+                    detailImagesList = [{ url: resim1 }];
+                }
+                setDetailImages(detailImagesList);
+                setLoading(false);
             });
     }
 
@@ -143,13 +166,6 @@ function DetailPage() {
             setresponseMessage({ ErrorCode: '1000', ErrorDescription: error.message });
         }
     };
-
-    const images = [
-        { url: resim1 },
-        { url: resim2 },
-        { url: resim3 },
-    ];
-
 
     // Düzenleme işlevi
     const handleEdit = (commentId, commentText) => {
@@ -234,7 +250,7 @@ function DetailPage() {
                 </Grid>
                 <Grid item xs={12} sm={12} md={2} />
                 <Grid item xs={12} sm={12} md={8} sx={{ borderRadius: '1.5rem' }}>
-                    <Carousel images={images}></Carousel>
+                    <Carousel images={detailImages}></Carousel>
                 </Grid>
                 <Grid item xs={false} sm={false} md={2} />
                 <Grid item xs={12} sm={12} md={1} />

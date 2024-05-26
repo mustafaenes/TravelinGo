@@ -170,8 +170,8 @@ function HotelsPage() {
                                 <Card sx={{ borderRadius: '1rem', mr: 4 }}>
                                     <CardMedia
                                         component="img"
-                                        image={resim2}
-                                        // image={restaurant.url}
+                                        // image={resim2}
+                                        image={restaurant.url}
                                         alt={restaurant.name}
                                     />
                                 </Card>
